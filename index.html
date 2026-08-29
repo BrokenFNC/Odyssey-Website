@@ -95,6 +95,11 @@ h2{font-family:var(--display);font-size:clamp(32px,5vw,46px);font-weight:900;let
 .vmeta{padding:18px 22px}
 .vmeta h3{font-size:17px;font-weight:700;margin-bottom:4px}
 .vmeta p{font-size:14px;color:var(--mute)}
+.vmeta .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:5px}
+.stag{font-family:var(--display);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 9px;border-radius:999px;white-space:nowrap}
+.stag.s1{background:rgba(255,210,31,.14);color:#ffd21f;border:1px solid rgba(255,210,31,.38)}
+.stag.s2{background:rgba(62,160,255,.14);color:#3ea0ff;border:1px solid rgba(62,160,255,.4)}
 .feature{grid-column:1/-1}
 @media(min-width:820px){.vgrid{grid-template-columns:1fr 1fr}}
 
@@ -212,15 +217,15 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
   <div class="vgrid">
     <div class="vcard feature">
       <video src="videos/season2-trailer.mp4" controls preload="metadata"></video>
-      <div class="vmeta"><h3>Season 2 Cinematic Trailer</h3><p>The latest chapter of Odyssey.</p></div>
+      <div class="vmeta"><div class="row"><h3>Odyssey - Battle Royale (Cinematic Trailer)</h3><span class="stag s2">Season 2</span></div><p>The latest chapter of Odyssey.</p></div>
     </div>
     <div class="vcard">
-      <video src="videos/br-trailer.mp4" controls preload="metadata"></video>
-      <div class="vmeta"><h3>Odyssey Battle Royale Cinematic Trailer</h3><p>The island that started it all.</p></div>
+      <video src="videos/br-trailer.mp4" poster="img/poster-br.jpg" controls preload="metadata"></video>
+      <div class="vmeta"><div class="row"><h3>Odyssey - Battle Royale (Cinematic Trailer)</h3><span class="stag s1">Season 1</span></div><p>The island that started it all.</p></div>
     </div>
     <div class="vcard">
       <video src="videos/season1-intro.mp4" controls preload="metadata"></video>
-      <div class="vmeta"><h3>Season 1 Intro Cinematic</h3><p>Where the Odyssey began.</p></div>
+      <div class="vmeta"><div class="row"><h3>Odyssey - Battle Royale (Teaser Trailer)</h3><span class="stag s1">Season 1</span></div><p>Where the Odyssey began.</p></div>
     </div>
   </div>
 </div></section>
