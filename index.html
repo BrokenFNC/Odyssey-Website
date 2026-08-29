@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Odyssey Battle Royale</title>
+<meta name="description" content="Odyssey Battle Royale a 50-player Fortnite island. Season 2 out now.">
+
+<link rel="icon" type="image/png" sizes="32x32" href="img/icon-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="img/icon-512.png">
+<link rel="apple-touch-icon" sizes="180x180" href="img/icon-180.png">
+<meta name="theme-color" content="#ffd21f">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Odyssey Battle Royale">
+<meta property="og:description" content="A 50-player battle royale island built in UEFN. Season 2 out now.">
+<meta property="og:image" content="img/social-card.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Odyssey Battle Royale">
+<meta name="twitter:description" content="A 50-player battle royale island built in UEFN. Season 2 out now.">
+<meta name="twitter:image" content="img/social-card.jpg">
+<style>
+@font-face{
+  font-family:'Azo Sans Uber';
+  src:url('fonts/AzoSansUber.otf') format('opentype');
+  font-weight:400 900;
+  font-style:normal;
+  font-display:swap;
+}
+:root{
+  --bg:#07080b; --panel:#12141a; --line:#232733;
+  --ink:#f2f4f8; --mute:#8b93a4;
+  --acc:#ffd21f; --acc2:#ffa415; --glow:rgba(255,210,31,.18);
+  --max:1120px;
+  --display:'Azo Sans Uber',Impact,'Arial Black',system-ui,sans-serif;
+  --body:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.6;-webkit-font-smoothing:antialiased}
+img,video{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+
+/* logos are pre-cropped to their artwork */
+.nav-logo{display:flex;align-items:center}
+.nav-logo img{height:34px;width:auto}
+.hero-logo{margin-bottom:28px}
+.hero-logo img{width:min(560px,88%);height:auto;
+  filter:drop-shadow(0 8px 30px rgba(255,180,30,.28))}
+.foot-logo img{height:30px;width:auto;opacity:.55}
+@media(max-width:640px){
+  .nav-logo img{height:28px}
+  .hero-logo img{width:min(340px,92%)}
+}
+
+nav{position:sticky;top:0;z-index:50;background:rgba(7,8,11,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:66px}
+.navlinks{display:flex;font-family:var(--display);gap:28px;font-size:14px;font-weight:600;color:var(--mute);letter-spacing:.04em;text-transform:uppercase}
+.navlinks a:hover{color:var(--acc)}
+@media(max-width:640px){.navlinks{display:none}}
+
+.hero{position:relative;min-height:82vh;display:flex;align-items:center;overflow:hidden;border-bottom:1px solid var(--line)}
+.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.3}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent,var(--bg) 76%)}
+.hero .wrap{position:relative;z-index:2;padding:80px 24px}
+.eyebrow{display:inline-block;font-family:var(--display);font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--acc);
+  border:1px solid rgba(255,210,31,.34);background:var(--glow);padding:7px 15px;border-radius:999px;margin-bottom:24px}
+.lede{font-size:clamp(16px,2vw,19px);color:var(--mute);max-width:56ch;margin-bottom:32px}
+.cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;font-family:var(--display);align-items:center;gap:10px;padding:15px 30px;border-radius:10px;font-weight:800;font-size:15px;
+  letter-spacing:.05em;text-transform:uppercase;transition:.18s}
+.btn-p{background:linear-gradient(100deg,var(--acc),var(--acc2));color:#1a1400;box-shadow:0 6px 26px rgba(255,164,21,.28)}
+.btn-p:hover{filter:brightness(1.08);transform:translateY(-2px)}
+.btn-s{border:1px solid var(--line);background:var(--panel);color:var(--ink)}
+.btn-s:hover{border-color:var(--acc);color:var(--acc)}
+.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:16px;font-weight:700;letter-spacing:.1em;
+  background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 20px;color:var(--acc)}
+
+section{padding:92px 0;border-bottom:1px solid var(--line)}
+.sec-head{margin-bottom:46px}
+.sec-tag{font-family:var(--display);font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--acc);margin-bottom:10px}
+h2{font-family:var(--display);font-size:clamp(32px,5vw,46px);font-weight:900;letter-spacing:.01em;line-height:1.08;text-transform:uppercase}
+.sec-sub{color:var(--mute);margin-top:12px;max-width:60ch}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:18px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:26px}
+.stat .n{font-family:var(--display);font-size:44px;font-weight:900;line-height:1;color:var(--acc)}
+.stat .l{font-family:var(--display);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin-top:8px}
+
+.vgrid{display:grid;gap:26px}
+.vcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:.2s}
+.vcard:hover{border-color:rgba(255,210,31,.4)}
+.vcard video{width:100%;aspect-ratio:16/9;object-fit:cover;background:#000}
+.vmeta{padding:18px 22px}
+.vmeta h3{font-size:17px;font-weight:700;margin-bottom:4px}
+.vmeta p{font-size:14px;color:var(--mute)}
+.feature{grid-column:1/-1}
+@media(min-width:820px){.vgrid{grid-template-columns:1fr 1fr}}
+
+.updates{display:flex;flex-direction:column;gap:18px}
+.upd{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:12px;padding:24px 28px}
+.upd-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.ver{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;font-weight:700;color:var(--acc)}
+.date{font-size:12px;font-weight:600;color:var(--mute);letter-spacing:.08em;text-transform:uppercase}
+.badge{font-family:var(--display);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:999px;
+  background:var(--glow);color:var(--acc);border:1px solid rgba(255,210,31,.3)}
+.upd h3{font-size:18px;font-weight:700;margin-bottom:8px}
+.upd ul{list-style:none;display:flex;flex-direction:column;gap:6px}
+.upd li{color:var(--mute);font-size:15px;padding-left:20px;position:relative}
+.upd li::before{content:"";position:absolute;left:4px;top:11px;width:5px;height:5px;border-radius:50%;background:var(--acc)}
+
+.mapshot{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel)}
+.mapshot img{width:100%}
+
+/* interactive map */
+.maplayout{display:grid;gap:22px}
+@media(min-width:900px){.maplayout{grid-template-columns:1fr 330px;align-items:start}}
+.mapviewer{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:14px;
+  background:#0c1420;aspect-ratio:1/1;cursor:grab;touch-action:none;user-select:none}
+.mapviewer.grabbing{cursor:grabbing}
+.mapstage{position:absolute;inset:0;transform-origin:50% 50%;will-change:transform}
+.mapstage img{width:100%;height:100%;object-fit:cover;pointer-events:none;-webkit-user-drag:none}
+.poi{position:absolute;transform:translate(-50%,-50%);background:none;border:0;padding:0;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:5px;font:inherit;color:#fff}
+.poi i{width:14px;height:14px;border-radius:50%;background:var(--acc);
+  border:2px solid rgba(0,0,0,.55);box-shadow:0 0 0 4px rgba(255,210,31,.22);transition:.16s;display:block}
+.poi b{font-family:var(--display);font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+  white-space:nowrap;padding:4px 9px;border-radius:6px;background:rgba(6,10,18,.86);
+  border:1px solid rgba(255,255,255,.14);opacity:0;transition:.16s}
+.poi b{opacity:.92}
+.poi:hover b,.poi.active b{opacity:1;border-color:var(--acc)}
+.poi:hover i{transform:scale(1.35)}
+.poi.active i{background:#fff;box-shadow:0 0 0 6px rgba(255,210,31,.45)}
+.mapctl{position:absolute;right:12px;bottom:12px;display:flex;gap:8px;z-index:5}
+.mapctl button{font-family:var(--display);min-width:38px;height:38px;padding:0 12px;border-radius:9px;
+  border:1px solid var(--line);background:rgba(10,14,22,.9);color:var(--ink);font-size:16px;
+  cursor:pointer;transition:.16s;backdrop-filter:blur(6px)}
+.mapctl button:hover{border-color:var(--acc);color:var(--acc)}
+.mapinfo{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px;min-height:190px}
+.mapinfo h3{font-family:var(--display);font-size:22px;text-transform:uppercase;letter-spacing:.02em;margin-bottom:10px}
+.mapinfo p{color:var(--mute);font-size:15px}
+.mapinfo-empty h3{color:var(--acc)}
+
+/* about the creator */
+#about-me{--acc:#3ea0ff;--acc2:#2b6fff;--glow:rgba(62,160,255,.16);background:
+  radial-gradient(900px 420px at 15% 0%,rgba(62,160,255,.16),transparent 70%),
+  radial-gradient(700px 380px at 88% 100%,rgba(43,111,255,.14),transparent 70%),
+  var(--bg)}
+.about{display:grid;gap:34px;align-items:center}
+@media(min-width:860px){.about{grid-template-columns:300px 1fr;gap:52px}}
+.avatar{justify-self:center}
+.avatar img{width:250px;height:250px;border-radius:22px;object-fit:cover;
+  border:2px solid rgba(62,160,255,.5);box-shadow:0 18px 50px rgba(43,111,255,.3)}
+.usbmark{margin-bottom:22px}
+.usbmark img{width:min(320px,78%);height:auto;
+  filter:drop-shadow(0 6px 22px rgba(62,160,255,.35))}
+.about p{color:#a9b6ca;font-size:16px;margin-bottom:14px;max-width:60ch}
+.socials{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.social{display:inline-flex;align-items:center;gap:9px;padding:12px 20px;border-radius:10px;
+  border:1px solid rgba(62,160,255,.34);background:rgba(62,160,255,.08);color:var(--acc);
+  font-family:var(--display);font-size:14px;letter-spacing:.04em;text-transform:uppercase;transition:.18s}
+.social:hover{background:rgba(62,160,255,.18);border-color:var(--acc);transform:translateY(-2px)}
+.social svg{width:16px;height:16px;fill:currentColor}
+
+footer{padding:54px 0;color:var(--mute);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+.disclaimer{font-size:12px;color:#5c6373;max-width:60ch;margin-top:8px}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <a href="#" class="nav-logo"><img src="img/odyssey-logo-sm.png" alt="Odyssey Battle Royale"></a>
+  <div class="navlinks">
+    <a href="#trailers">Trailers</a>
+    <a href="#updates">Updates</a>
+    <a href="#map">Map</a>
+    <a href="#about-me">About</a>
+    <a href="#play">Play</a>
+  </div>
+</div></nav>
+
+<header class="hero">
+  <video src="videos/hero-loop.mp4" autoplay muted loop playsinline preload="auto"></video>
+  <div class="wrap">
+    <span class="eyebrow">Season 2 Out Now</span>
+    <div class="hero-logo"><img src="img/odyssey-logo-lg.png" alt="Odyssey Battle Royale"></div>
+    <p class="lede">A 50-player battle royale island built in UEFN. Drop in, loot up, and fight to the last squad standing across a hand-built world.</p>
+    <div class="cta">
+      <a class="btn btn-p" href="#play">Play Now</a>
+      <a class="btn btn-s" href="#trailers">Watch Trailer</a>
+    </div>
+  </div>
+</header>
+
+<section id="about"><div class="wrap">
+  <div class="stats">
+    <div class="stat"><div class="n">50</div><div class="l">Players</div></div>
+    <div class="stat"><div class="n">2.8<span style="font-size:22px">km</span></div><div class="l">Map Size</div></div>
+    <div class="stat"><div class="n">19K+</div><div class="l">Placed Objects</div></div>
+    <div class="stat"><div class="n">S2</div><div class="l">Current Season</div></div>
+  </div>
+</div></section>
+
+<section id="trailers"><div class="wrap">
+  <div class="sec-head">
+    <div class="sec-tag">Watch</div>
+    <h2>Trailers &amp; Cinematics</h2>
+    <p class="sec-sub">Every cinematic from the Odyssey universe, from the original drop to Season 2.</p>
+  </div>
+  <div class="vgrid">
+    <div class="vcard feature">
+      <video src="videos/season2-trailer.mp4" controls preload="metadata"></video>
+      <div class="vmeta"><h3>Season 2 Cinematic Trailer</h3><p>The latest chapter of Odyssey.</p></div>
+    </div>
+    <div class="vcard">
+      <video src="videos/br-trailer.mp4" controls preload="metadata"></video>
+      <div class="vmeta"><h3>Odyssey Battle Royale Cinematic Trailer</h3><p>The island that started it all.</p></div>
+    </div>
+    <div class="vcard">
+      <video src="videos/season1-intro.mp4" controls preload="metadata"></video>
+      <div class="vmeta"><h3>Season 1 Intro Cinematic</h3><p>Where the Odyssey began.</p></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="updates"><div class="wrap">
+  <div class="sec-head">
+    <div class="sec-tag">Changelog</div>
+    <h2>Island Updates</h2>
+    <p class="sec-sub">Patch notes and changes, newest first.</p>
+  </div>
+  <div class="updates">
+    <div class="upd">
+      <div class="upd-top"><span class="ver">v2.0</span><span class="date">Season 2 Launch</span><span class="badge">Major</span></div>
+      <h3>Season 2 is live</h3>
+      <ul>
+        <li>New season content</li>
+        <li>Map expansion and new points of interest</li>
+        <li>Performance and streaming improvements</li>
+      </ul>
+    </div>
+    <div class="upd">
+      <div class="upd-top"><span class="ver">v1.0</span><span class="date">Season 1</span></div>
+      <h3>Odyssey Battle Royale launches</h3>
+      <ul>
+        <li>50-player battle royale on a fully custom island</li>
+        <li>Custom loot pool and progression</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<section id="map"><div class="wrap">
+  <div class="sec-head">
+    <div class="sec-tag">The Island</div>
+    <h2>Season 2 Map</h2>
+    <p class="sec-sub">Scroll to zoom, drag to pan, and click a location to read about it.</p>
+  </div>
+
+  <div class="maplayout">
+    <div class="mapviewer" id="mapViewer">
+      <div class="mapstage" id="mapStage">
+        <img src="img/season2-map.jpg" alt="Odyssey Season 2 map" draggable="false">
+        <button class="poi" data-poi="homestead"  style="left:36.0%;top:44.0%"><i></i></button>
+        <button class="poi" data-poi="beach"      style="left:45.5%;top:18.5%"><i></i></button>
+        <button class="poi" data-poi="suburbs"    style="left:75.0%;top:32.5%"><i></i></button>
+        <button class="poi" data-poi="lake"       style="left:63.5%;top:45.5%"><i></i></button>
+        <button class="poi" data-poi="fields"     style="left:53.0%;top:53.5%"><i></i></button>
+        <button class="poi" data-poi="resistance" style="left:54.0%;top:62.0%"><i></i></button>
+        <button class="poi" data-poi="frosted"    style="left:30.0%;top:62.5%"><i></i></button>
+        <button class="poi" data-poi="meadows"    style="left:62.0%;top:78.5%"><i></i></button>
+      </div>
+      <div class="mapctl">
+        <button id="mZoomIn"  aria-label="Zoom in">+</button>
+        <button id="mZoomOut" aria-label="Zoom out">&minus;</button>
+        <button id="mReset"   aria-label="Reset view">Reset</button>
+      </div>
+    </div>
+
+    <aside class="mapinfo" id="mapInfo">
+      <div class="mapinfo-empty" id="mapEmpty">
+        <h3>Lyssara</h3>
+        <p>Seven locations across the island. Pick one on the map to learn its story.</p>
+      </div>
+      <div class="mapinfo-body" id="mapBody" hidden>
+        <div class="sec-tag" id="mapKind">Location</div>
+        <h3 id="mapName"></h3>
+        <p id="mapDesc"></p>
+      </div>
+    </aside>
+  </div>
+</div></section>
+
+<script>
+(function(){
+  var POI = {
+    homestead:  ["Homestead","Once the comforting home of many Lyssara residents, now an industrial jungle for the VOA."],
+    beach:      ["Busy Beach","The island's only but extremely popular summer relaxation spot."],
+    suburbs:    ["Sunny Suburbs","The sister town of Homestead, has many places for young people to enjoy their day."],
+    lake:       ["Lurking Lake","Lyssara's great lake, producing hydro energy for everyone."],
+    fields:     ["Friendly Fields","The island's major crop producer, beloved by all."],
+    resistance: ["The Resistance","Jules' base of operations along with her growing team, built to oppose the VOA directly and liberate the island."],
+    frosted:    ["Frosted Front","A flash frozen wasteland, bi-product of the VOA's “Biome Controller” explosion, now controlled by the resistance."],
+    meadows:    ["Mended Meadows","Lyssara's oldest landmark, a medieval village that was only recently liberated from the VOA, now undergoing repairs."]
+  };
+  var viewer = document.getElementById('mapViewer');
+  var stage  = document.getElementById('mapStage');
+  if(!viewer || !stage) return;
+  var scale=1, tx=0, ty=0, drag=false, sx=0, sy=0, moved=0;
+  var MIN=1, MAX=5;
+
+  function clamp(){
+    var r = viewer.getBoundingClientRect();
+    var maxX = (r.width  * scale - r.width )/2;
+    var maxY = (r.height * scale - r.height)/2;
+    tx = Math.max(-maxX, Math.min(maxX, tx));
+    ty = Math.max(-maxY, Math.min(maxY, ty));
+  }
+  function apply(){
+    clamp();
+    stage.style.transform = 'translate('+tx+'px,'+ty+'px) scale('+scale+')';
+    var inv = 1/scale;
+    var ps = stage.querySelectorAll('.poi');
+    for(var i=0;i<ps.length;i++) ps[i].style.transform = 'translate(-50%,-50%) scale('+inv+')';
+    viewer.classList.toggle('zoomed', scale > 1.02);
+  }
+  function zoomAt(f, cx, cy){
+    var r = viewer.getBoundingClientRect();
+    var px = cx - r.left - r.width/2;
+    var py = cy - r.top  - r.height/2;
+    var ns = Math.max(MIN, Math.min(MAX, scale*f));
+    var k = ns/scale;
+    tx = px - (px - tx)*k;
+    ty = py - (py - ty)*k;
+    scale = ns;
+    apply();
+  }
+  viewer.addEventListener('wheel', function(e){
+    e.preventDefault();
+    zoomAt(e.deltaY < 0 ? 1.18 : 1/1.18, e.clientX, e.clientY);
+  }, {passive:false});
+  var downPoi=null;
+  viewer.addEventListener('pointerdown', function(e){
+    drag=true; moved=0; sx=e.clientX-tx; sy=e.clientY-ty;
+    downPoi = e.target.closest('.poi');
+    viewer.classList.add('grabbing');
+  });
+  viewer.addEventListener('pointermove', function(e){
+    if(!drag) return;
+    var nx=e.clientX-sx, ny=e.clientY-sy;
+    moved += Math.abs(nx-tx)+Math.abs(ny-ty);
+    if(moved>6 && !viewer.hasPointerCapture(e.pointerId)) viewer.setPointerCapture(e.pointerId);
+    tx=nx; ty=ny; apply();
+  });
+  function endDrag(e){
+    if(drag && moved<=6 && downPoi){ select(downPoi.dataset.poi);
+      if(window.innerWidth<900) document.getElementById('mapInfo').scrollIntoView({behavior:'smooth',block:'nearest'}); }
+    drag=false; downPoi=null; viewer.classList.remove('grabbing');
+  }
+  viewer.addEventListener('pointerup', endDrag);
+  viewer.addEventListener('pointercancel', endDrag);
+
+  document.getElementById('mZoomIn').onclick = function(){ var r=viewer.getBoundingClientRect(); zoomAt(1.4, r.left+r.width/2, r.top+r.height/2); };
+  document.getElementById('mZoomOut').onclick= function(){ var r=viewer.getBoundingClientRect(); zoomAt(1/1.4, r.left+r.width/2, r.top+r.height/2); };
+  document.getElementById('mReset').onclick  = function(){ scale=1; tx=0; ty=0; apply(); select(null); };
+
+  var empty=document.getElementById('mapEmpty'), body=document.getElementById('mapBody');
+  var nameEl=document.getElementById('mapName'), descEl=document.getElementById('mapDesc');
+  function select(key){
+    var ps=stage.querySelectorAll('.poi');
+    for(var i=0;i<ps.length;i++) ps[i].classList.toggle('active', ps[i].dataset.poi===key);
+    if(!key || !POI[key]){ empty.hidden=false; body.hidden=true; return; }
+    empty.hidden=true; body.hidden=false;
+    nameEl.textContent=POI[key][0];
+    descEl.textContent=POI[key][1];
+  }
+  apply();
+})();
+</script>
+
+
+<section id="about-me"><div class="wrap">
+  <div class="sec-head">
+    <div class="sec-tag">The Creator</div>
+    <h2>About Me</h2>
+  </div>
+  <div class="about">
+    <div class="avatar"><img src="img/usb-avatar-sm.jpg" alt="BrokenUSB"></div>
+    <div>
+      <div class="usbmark"><img src="img/usb-wordmark-cut.png" alt="BrokenUSB"></div>
+      <p>I'm <strong style="color:var(--acc)">BrokenUSB</strong>, a Fortnite UEFN developer based in Canada. I run <strong>@PlayOdysseyBR</strong> and <strong>@OfficialFNAD</strong>, and work at Genesis Studios and meta4interact.</p>
+      <p>Odyssey is my custom battle royale island: a 2.8&nbsp;km hand-built map across two seasons, with original cinematics and a world that keeps expanding with every update.</p>
+      <div class="socials">
+        <a class="social" href="https://x.com/BrokenUSB_" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          @BrokenUSB_
+        </a>
+      </div>
+    </div>
+  </div>
+</div></section>
+<section id="play"><div class="wrap" style="text-align:center">
+  <div class="sec-tag">Drop In</div>
+  <h2 style="margin-bottom:14px">Play Odyssey</h2>
+  <p class="sec-sub" style="margin:0 auto 30px">Enter the island code in Fortnite to jump in.</p>
+  <div class="cta" style="justify-content:center">
+    <span class="code">ISLAND-CODE-HERE</span>
+    <a class="btn btn-p" href="#">Open in Fortnite</a>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <div>
+    <div>© 2026 Odyssey</div>
+    <div class="disclaimer">Odyssey Battle Royale is a user-created experience made within Fortnite Creative. This is not sponsored, endorsed, or administered by Epic Games, Inc.</div>
+  </div>
+  <div class="foot-logo"><img src="img/odyssey-logo-sm.png" alt=""></div>
+</div></footer>
+
+</body>
+</html>
