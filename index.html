@@ -72,6 +72,9 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between;height:6
   letter-spacing:.05em;text-transform:uppercase;transition:.18s}
 .btn-p{background:linear-gradient(100deg,var(--acc),var(--acc2));color:#1a1400;box-shadow:0 6px 26px rgba(255,164,21,.28)}
 .btn-p:hover{filter:brightness(1.08);transform:translateY(-2px)}
+/* stand-in for the play button while the island is not open yet. Not a link, so it does
+   not invite a click that goes nowhere. */
+.btn-soon{border:1px solid rgba(255,210,31,.4);background:var(--glow);color:var(--acc);cursor:default}
 .btn-s{border:1px solid var(--line);background:var(--panel);color:var(--ink)}
 .btn-s:hover{border-color:var(--acc);color:var(--acc)}
 .code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:16px;font-weight:700;letter-spacing:.1em;
@@ -167,6 +170,54 @@ h2{font-family:var(--display);font-size:clamp(32px,5vw,46px);font-weight:900;let
   font-family:var(--display);font-size:14px;letter-spacing:.04em;text-transform:uppercase;transition:.18s}
 .social:hover{background:rgba(62,160,255,.18);border-color:var(--acc);transform:translateY(-2px)}
 .social svg{width:16px;height:16px;fill:currentColor}
+/* filled variant, for the one button on the page that is an actual call to action */
+.social.primary{background:linear-gradient(100deg,var(--acc),var(--acc2));border-color:transparent;
+  color:#04101f;font-weight:800;box-shadow:0 6px 24px rgba(62,160,255,.28)}
+.social.primary:hover{background:linear-gradient(100deg,var(--acc),var(--acc2));border-color:transparent;filter:brightness(1.09)}
+button.social{cursor:pointer;font-family:var(--display);font-size:14px;letter-spacing:.04em;text-transform:uppercase}
+/* the Work With Me button is a <summary>, so the form opens without any JavaScript */
+.contact>summary{cursor:pointer;list-style:none}
+.contact>summary::-webkit-details-marker{display:none}
+.contact>summary::marker{content:""}
+.contact[open]{flex-basis:100%}
+.hire{color:#8fa2bd;font-size:15px;margin-top:26px;margin-bottom:0}
+
+/* contact form, revealed by the Work With Me button. Posts through FormSubmit,
+   same as the bug form on bugs.html. */
+.cform{margin-top:22px;max-width:620px;background:rgba(9,12,19,.72);border:1px solid rgba(62,160,255,.24);
+  border-radius:14px;padding:26px}
+.cform .row{display:grid;gap:14px}
+@media(min-width:700px){.cform .row{grid-template-columns:1fr 1fr}}
+.cform label{display:block;font-family:var(--display);font-size:11px;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:#c6d4e6;margin-bottom:6px}
+.cform input,.cform textarea,.cform select{font-family:var(--body);font-size:15px;color:var(--ink);
+  background:#080b11;border:1px solid rgba(62,160,255,.2);border-radius:9px;padding:11px 13px;width:100%;transition:.16s}
+.cform input:focus,.cform textarea:focus,.cform select:focus{outline:none;border-color:var(--acc);
+  box-shadow:0 0 0 3px rgba(62,160,255,.14)}
+.cform textarea{min-height:110px;resize:vertical;line-height:1.6}
+.cform .f{margin-bottom:14px}
+.cform button{margin-top:6px}
+.cform .honey{position:absolute;left:-9999px;opacity:0;height:0;width:0;overflow:hidden}
+.csent{margin-top:22px;max-width:620px;background:rgba(62,160,255,.1);border:1px solid rgba(62,160,255,.42);
+  border-radius:12px;padding:18px 22px;color:#c6d4e6;font-size:15px}
+.csent b{display:block;font-family:var(--display);font-size:13px;font-weight:800;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--acc);margin-bottom:3px}
+
+/* play section sits on an in-game shot of the island, darkened hard so the gold still reads.
+   Tune the look with the filter on ::before and the gradients on ::after. */
+#play{position:relative;overflow:hidden;padding:124px 0;background:var(--bg)}
+#play::before{content:"";position:absolute;inset:0;z-index:0;
+  background:url('img/play-bg.jpg') center 44% / cover no-repeat;
+  filter:saturate(.7) brightness(.52) contrast(1.06)}
+#play::after{content:"";position:absolute;inset:0;z-index:1;
+  background:
+    radial-gradient(ellipse at 50% 52%,rgba(7,8,11,.28),rgba(7,8,11,.86) 76%),
+    linear-gradient(180deg,var(--bg),rgba(7,8,11,.45) 20%,rgba(7,8,11,.5) 74%,var(--bg)),
+    linear-gradient(180deg,rgba(255,164,21,.05),transparent 60%)}
+#play .wrap{position:relative;z-index:2}
+#play .sec-sub{color:#c6cdda}
+#play .code{background:rgba(7,8,11,.66);border-color:rgba(255,210,31,.44);backdrop-filter:blur(6px)}
+@media(max-width:640px){#play{padding:92px 0}#play::before{background-position:center 48%}}
 
 footer{padding:54px 0;color:var(--mute);font-size:14px}
 footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
@@ -181,6 +232,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
     <a href="#trailers">Trailers</a>
     <a href="#updates">Updates</a>
     <a href="#map">Map</a>
+    <a href="bugs.html">Bugs</a>
     <a href="#about-me">About</a>
     <a href="#play">Play</a>
   </div>
@@ -383,6 +435,16 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
   }
   apply();
 })();
+
+/* Opening and closing the contact form is handled by <details>, no script needed.
+   This only shows the confirmation after FormSubmit sends someone back here. */
+(function(){
+  if(new URLSearchParams(location.search).get('sent')!=='contact') return;
+  var sent=document.getElementById('contactSent');
+  if(!sent) return;
+  sent.hidden=false;
+  sent.scrollIntoView({behavior:'smooth',block:'center'});
+})();
 </script>
 
 
@@ -397,11 +459,64 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
       <div class="usbmark"><img src="img/usb-wordmark-cut.png" alt="BrokenUSB"></div>
       <p>I'm <strong style="color:var(--acc)">BrokenUSB</strong>, a Fortnite UEFN developer based in Canada. I run <strong>@PlayOdysseyBR</strong> and <strong>@OfficialFNAD</strong>, and work at Genesis Studios and meta4interact.</p>
       <p>Odyssey is my custom battle royale island: a 2.8&nbsp;km hand-built map across two seasons, with original cinematics and a world that keeps expanding with every update.</p>
+      <p class="hire">Open to commissions, collaborations and studio work. If you have a project in mind, get in touch.</p>
       <div class="socials">
+        <!-- details/summary rather than a JS toggle, so the form opens with no script at all -->
+        <details class="contact" id="contact">
+          <summary class="social primary">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.25 6.75A2.25 2.25 0 0 1 4.5 4.5h15a2.25 2.25 0 0 1 2.25 2.25v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25zm2.02-.31 7.73 5.52 7.73-5.52a.76.76 0 0 0-.23-.04h-15a.76.76 0 0 0-.23.04m15.48 1.9-7.29 5.2a.75.75 0 0 1-.87 0l-7.29-5.2v9.16c0 .41.34.75.75.75h15c.41 0 .75-.34.75-.75z"/></svg>
+            Work With Me
+          </summary>
+
+          <!-- Posts through FormSubmit, same account as the bug form on bugs.html. Swapping the
+               action to the FormSubmit alias after activation covers both forms at once. -->
+          <form class="cform" id="contactForm" action="https://formsubmit.co/austinbrake07@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="Odyssey site: work enquiry">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="https://brokenfnc.github.io/Odyssey-Website/?sent=contact#about-me">
+        <div class="honey"><label>Leave this empty<input type="text" name="_honey" tabindex="-1" autocomplete="off"></label></div>
+
+        <div class="row">
+          <div class="f">
+            <label for="c-name">Your name</label>
+            <input type="text" id="c-name" name="Name" required>
+          </div>
+          <div class="f">
+            <label for="c-mail">Your email</label>
+            <input type="email" id="c-mail" name="Email" required>
+          </div>
+        </div>
+
+        <div class="f">
+          <label for="c-kind">What is it about</label>
+          <select id="c-kind" name="Enquiry type">
+            <option>Commission</option>
+            <option>Collaboration</option>
+            <option>Studio or agency work</option>
+            <option>Sponsorship</option>
+            <option>Something else</option>
+          </select>
+        </div>
+
+        <div class="f">
+          <label for="c-msg">Message</label>
+          <textarea id="c-msg" name="Message" required placeholder="A rough idea of the project, scope and timeline is plenty to start."></textarea>
+        </div>
+
+            <button type="submit" class="social primary">Send Message</button>
+          </form>
+        </details>
+
         <a class="social" href="https://x.com/BrokenUSB_" target="_blank" rel="noopener noreferrer">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
           @BrokenUSB_
         </a>
+      </div>
+
+      <div class="csent" id="contactSent" hidden>
+        <b>Message sent</b>
+        Thanks for reaching out. I read everything that comes through here and will get back to you.
       </div>
     </div>
   </div>
@@ -409,10 +524,14 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
 <section id="play"><div class="wrap" style="text-align:center">
   <div class="sec-tag">Drop In</div>
   <h2 style="margin-bottom:14px">Play Odyssey</h2>
-  <p class="sec-sub" style="margin:0 auto 30px">Enter the island code in Fortnite to jump in.</p>
+  <p class="sec-sub" style="margin:0 auto 30px">Season 2 drops soon. The island code goes here the day it opens.</p>
+  <!-- COMING SOON STATE. To go live: put the real code in the .code span, delete the two
+       hidden attributes, point the link at the Fortnite URL, and delete the soon pill below.
+       Also swap the sec-sub line above back to "Enter the island code in Fortnite to jump in." -->
   <div class="cta" style="justify-content:center">
-    <span class="code">ISLAND-CODE-HERE</span>
-    <a class="btn btn-p" href="#">Open in Fortnite</a>
+    <span class="code" hidden>ISLAND-CODE-HERE</span>
+    <a class="btn btn-p" href="#" hidden>Open in Fortnite</a>
+    <span class="btn btn-soon">Coming Soon</span>
   </div>
 </div></section>
 
