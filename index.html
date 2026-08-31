@@ -68,6 +68,7 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between;height:6
   border:1px solid rgba(255,210,31,.34);background:var(--glow);padding:7px 15px;border-radius:999px;margin-bottom:24px}
 .lede{font-size:clamp(16px,2vw,19px);color:var(--mute);max-width:56ch;margin-bottom:32px}
 .cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+[hidden]{display:none !important}
 .btn{display:inline-flex;font-family:var(--display);align-items:center;gap:10px;padding:15px 30px;border-radius:10px;font-weight:800;font-size:15px;
   letter-spacing:.05em;text-transform:uppercase;transition:.18s}
 .btn-p{background:linear-gradient(100deg,var(--acc),var(--acc2));color:#1a1400;box-shadow:0 6px 26px rgba(255,164,21,.28)}
@@ -96,9 +97,8 @@ h2{font-family:var(--display);font-size:clamp(32px,5vw,46px);font-weight:900;let
 .vcard:hover{border-color:rgba(255,210,31,.4)}
 .vcard video{width:100%;aspect-ratio:16/9;object-fit:cover;background:#000}
 .vmeta{padding:18px 22px}
-.vmeta h3{font-size:17px;font-weight:700;margin-bottom:4px}
-.vmeta p{font-size:14px;color:var(--mute)}
-.vmeta .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:5px}
+.vmeta h3{font-size:17px;font-weight:700}
+.vmeta .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .stag{font-family:var(--display);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
   padding:3px 9px;border-radius:999px;white-space:nowrap}
 .stag.s1{background:rgba(255,210,31,.14);color:#ffd21f;border:1px solid rgba(255,210,31,.38)}
@@ -117,6 +117,10 @@ h2{font-family:var(--display);font-size:clamp(32px,5vw,46px);font-weight:900;let
 .upd ul{list-style:none;display:flex;flex-direction:column;gap:6px}
 .upd li{color:var(--mute);font-size:15px;padding-left:20px;position:relative}
 .upd li::before{content:"";position:absolute;left:4px;top:11px;width:5px;height:5px;border-radius:50%;background:var(--acc)}
+
+/* the VOA link hidden in the Homestead blurb. Meant to read as an anomaly, not a button. */
+.voa{color:inherit;border-bottom:1px dotted rgba(255,210,31,.5);cursor:pointer;transition:.18s}
+.voa:hover{color:var(--acc);border-bottom-color:var(--acc);text-shadow:0 0 12px rgba(255,210,31,.5)}
 
 .mapshot{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel)}
 .mapshot img{width:100%}
@@ -268,15 +272,15 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
   <div class="vgrid">
     <div class="vcard feature">
       <video src="videos/season2-trailer.mp4" controls preload="metadata"></video>
-      <div class="vmeta"><div class="row"><h3>Odyssey - Battle Royale (Cinematic Trailer)</h3><span class="stag s2">Season 2</span></div><p>The latest chapter of Odyssey.</p></div>
+      <div class="vmeta"><div class="row"><h3>Odyssey - Battle Royale (Cinematic Trailer)</h3><span class="stag s2">Season 2</span></div></div>
     </div>
     <div class="vcard">
       <video src="videos/br-trailer.mp4" poster="img/poster-br.jpg" controls preload="metadata"></video>
-      <div class="vmeta"><div class="row"><h3>Odyssey - Battle Royale (Cinematic Trailer)</h3><span class="stag s1">Season 1</span></div><p>The island that started it all.</p></div>
+      <div class="vmeta"><div class="row"><h3>Odyssey - Battle Royale (Cinematic Trailer)</h3><span class="stag s1">Season 1</span></div></div>
     </div>
     <div class="vcard">
       <video src="videos/season1-intro.mp4" controls preload="metadata"></video>
-      <div class="vmeta"><div class="row"><h3>Odyssey - Battle Royale (Teaser Trailer)</h3><span class="stag s1">Season 1</span></div><p>Where the Odyssey began.</p></div>
+      <div class="vmeta"><div class="row"><h3>Odyssey - Battle Royale (Teaser Trailer)</h3><span class="stag s1">Season 1</span></div></div>
     </div>
   </div>
 </div></section>
@@ -352,7 +356,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
 <script>
 (function(){
   var POI = {
-    homestead:  ["Homestead","Once the comforting home of many Lyssara residents, now an industrial jungle for the VOA."],
+    // Descriptions are rendered as HTML, so a POI entry can contain a link.
+    homestead:  ["Homestead","Once the comforting home of many Lyssara residents, now an industrial jungle for the <a class=\"voa\" href=\"voa.html\">VOA</a>."],
     beach:      ["Busy Beach","The island's only but extremely popular summer relaxation spot."],
     suburbs:    ["Sunny Suburbs","The sister town of Homestead, has many places for young people to enjoy their day."],
     lake:       ["Lurking Lake","Lyssara's great lake, producing hydro energy for everyone."],
@@ -430,7 +435,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
     if(!key || !POI[key]){ empty.hidden=false; body.hidden=true; return; }
     empty.hidden=true; body.hidden=false;
     nameEl.textContent=POI[key][0];
-    descEl.textContent=POI[key][1];
+    descEl.innerHTML=POI[key][1];
   }
   apply();
 })();
@@ -542,5 +547,109 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
   <div class="foot-logo"><img src="img/odyssey-logo-sm.png" alt=""></div>
 </div></footer>
 
+<!-- ============================ BACKGROUND MUSIC ============================
+     A short ambient loop with a toggle in the bottom right corner.
+
+     Browsers refuse to autoplay audio with sound until the visitor has
+     interacted with the page, so if the first play() is rejected we quietly
+     wait and start on their first click or key press instead.
+
+     The on or off choice is remembered in localStorage, so a visitor who
+     turns it off never hears it again. The playback position is carried
+     between pages in sessionStorage so moving from the home page to the bugs
+     page does not restart the loop.
+
+     To change the track: replace audio/ambient-loop.ogg and .mp3.
+     To make it off by default: change "!== 'off'" below to "=== 'on'".
+     To remove it: delete this whole block.
+========================================================================== -->
+<style>
+.music{position:fixed;right:18px;bottom:18px;z-index:60;width:46px;height:46px;
+  border-radius:50%;display:grid;place-items:center;cursor:pointer;padding:0;
+  background:rgba(18,20,26,.82);border:1px solid var(--line);color:var(--mute);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:.18s}
+.music:hover{border-color:var(--acc);color:var(--acc)}
+.music.on{border-color:rgba(255,210,31,.55);color:var(--acc);box-shadow:0 0 0 4px var(--glow)}
+.music svg{width:20px;height:20px;display:block}
+.music .wave{display:none}
+.music.on .wave{display:block}
+.music.on .off-x{display:none}
+@media (max-width:640px){.music{right:12px;bottom:12px;width:42px;height:42px}}
+</style>
+
+<button class="music" id="music" type="button" aria-pressed="false"
+        aria-label="Toggle background music" title="Background music">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M4 9.5h3.2L12 5.5v13l-4.8-4H4z"/>
+    <path class="wave" d="M15.6 9.2a4 4 0 0 1 0 5.6"/>
+    <path class="wave" d="M18.2 6.8a7.5 7.5 0 0 1 0 10.4"/>
+    <path class="off-x" d="M16 9.5l5 5M21 9.5l-5 5"/>
+  </svg>
+</button>
+
+<audio id="music-track" loop preload="auto">
+  <source src="audio/ambient-loop.ogg" type="audio/ogg">
+  <source src="audio/ambient-loop.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+(function(){
+  var btn = document.getElementById('music');
+  var a   = document.getElementById('music-track');
+  if(!btn || !a) return;
+
+  var KEY = 'odyssey-music', POS = 'odyssey-music-pos';
+  a.volume = 0.30;
+
+  var want = true;
+  try { want = localStorage.getItem(KEY) !== 'off'; } catch(e){}
+  try { var p = parseFloat(sessionStorage.getItem(POS)); if(p > 0) a.currentTime = p; } catch(e){}
+
+  function paint(){
+    btn.classList.toggle('on', !a.paused);
+    btn.setAttribute('aria-pressed', a.paused ? 'false' : 'true');
+  }
+  function save(){ try { sessionStorage.setItem(POS, a.currentTime || 0); } catch(e){} }
+
+  var armed = false;
+  function armFirstGesture(){
+    if(armed) return;
+    armed = true;
+    var go = function(){
+      document.removeEventListener('pointerdown', go);
+      document.removeEventListener('keydown', go);
+      armed = false;
+      if(want) a.play().catch(function(){});
+    };
+    document.addEventListener('pointerdown', go);
+    document.addEventListener('keydown', go);
+  }
+  function start(){
+    var r = a.play();
+    if(r && r.catch) r.catch(armFirstGesture);
+  }
+
+  a.addEventListener('play', paint);
+  a.addEventListener('pause', paint);
+
+  btn.addEventListener('click', function(){
+    want = !want;
+    try { localStorage.setItem(KEY, want ? 'on' : 'off'); } catch(e){}
+    if(want){ start(); } else { a.pause(); save(); }
+  });
+
+  document.addEventListener('visibilitychange', function(){
+    if(document.hidden){ if(!a.paused){ a.pause(); save(); } }
+    else if(want && a.paused){ a.play().catch(function(){}); }
+  });
+
+  setInterval(function(){ if(!a.paused) save(); }, 2000);
+  window.addEventListener('pagehide', save);
+
+  paint();
+  if(want) start();
+})();
+</script>
 </body>
 </html>

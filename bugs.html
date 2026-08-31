@@ -395,5 +395,109 @@ if (new URLSearchParams(location.search).get("sent") === "1"){
         to "true" and FormSubmit will show a captcha step.
 ============================================================================== -->
 
+<!-- ============================ BACKGROUND MUSIC ============================
+     A short ambient loop with a toggle in the bottom right corner.
+
+     Browsers refuse to autoplay audio with sound until the visitor has
+     interacted with the page, so if the first play() is rejected we quietly
+     wait and start on their first click or key press instead.
+
+     The on or off choice is remembered in localStorage, so a visitor who
+     turns it off never hears it again. The playback position is carried
+     between pages in sessionStorage so moving from the home page to the bugs
+     page does not restart the loop.
+
+     To change the track: replace audio/ambient-loop.ogg and .mp3.
+     To make it off by default: change "!== 'off'" below to "=== 'on'".
+     To remove it: delete this whole block.
+========================================================================== -->
+<style>
+.music{position:fixed;right:18px;bottom:18px;z-index:60;width:46px;height:46px;
+  border-radius:50%;display:grid;place-items:center;cursor:pointer;padding:0;
+  background:rgba(18,20,26,.82);border:1px solid var(--line);color:var(--mute);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:.18s}
+.music:hover{border-color:var(--acc);color:var(--acc)}
+.music.on{border-color:rgba(255,210,31,.55);color:var(--acc);box-shadow:0 0 0 4px var(--glow)}
+.music svg{width:20px;height:20px;display:block}
+.music .wave{display:none}
+.music.on .wave{display:block}
+.music.on .off-x{display:none}
+@media (max-width:640px){.music{right:12px;bottom:12px;width:42px;height:42px}}
+</style>
+
+<button class="music" id="music" type="button" aria-pressed="false"
+        aria-label="Toggle background music" title="Background music">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M4 9.5h3.2L12 5.5v13l-4.8-4H4z"/>
+    <path class="wave" d="M15.6 9.2a4 4 0 0 1 0 5.6"/>
+    <path class="wave" d="M18.2 6.8a7.5 7.5 0 0 1 0 10.4"/>
+    <path class="off-x" d="M16 9.5l5 5M21 9.5l-5 5"/>
+  </svg>
+</button>
+
+<audio id="music-track" loop preload="auto">
+  <source src="audio/ambient-loop.ogg" type="audio/ogg">
+  <source src="audio/ambient-loop.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+(function(){
+  var btn = document.getElementById('music');
+  var a   = document.getElementById('music-track');
+  if(!btn || !a) return;
+
+  var KEY = 'odyssey-music', POS = 'odyssey-music-pos';
+  a.volume = 0.30;
+
+  var want = true;
+  try { want = localStorage.getItem(KEY) !== 'off'; } catch(e){}
+  try { var p = parseFloat(sessionStorage.getItem(POS)); if(p > 0) a.currentTime = p; } catch(e){}
+
+  function paint(){
+    btn.classList.toggle('on', !a.paused);
+    btn.setAttribute('aria-pressed', a.paused ? 'false' : 'true');
+  }
+  function save(){ try { sessionStorage.setItem(POS, a.currentTime || 0); } catch(e){} }
+
+  var armed = false;
+  function armFirstGesture(){
+    if(armed) return;
+    armed = true;
+    var go = function(){
+      document.removeEventListener('pointerdown', go);
+      document.removeEventListener('keydown', go);
+      armed = false;
+      if(want) a.play().catch(function(){});
+    };
+    document.addEventListener('pointerdown', go);
+    document.addEventListener('keydown', go);
+  }
+  function start(){
+    var r = a.play();
+    if(r && r.catch) r.catch(armFirstGesture);
+  }
+
+  a.addEventListener('play', paint);
+  a.addEventListener('pause', paint);
+
+  btn.addEventListener('click', function(){
+    want = !want;
+    try { localStorage.setItem(KEY, want ? 'on' : 'off'); } catch(e){}
+    if(want){ start(); } else { a.pause(); save(); }
+  });
+
+  document.addEventListener('visibilitychange', function(){
+    if(document.hidden){ if(!a.paused){ a.pause(); save(); } }
+    else if(want && a.paused){ a.play().catch(function(){}); }
+  });
+
+  setInterval(function(){ if(!a.paused) save(); }, 2000);
+  window.addEventListener('pagehide', save);
+
+  paint();
+  if(want) start();
+})();
+</script>
 </body>
 </html>
