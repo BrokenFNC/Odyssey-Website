@@ -396,7 +396,9 @@ if (new URLSearchParams(location.search).get("sent") === "1"){
 ============================================================================== -->
 
 <!-- ============================ BACKGROUND MUSIC ============================
-     A short ambient loop with a toggle in the bottom right corner.
+     A short lofi loop with a toggle in the bottom right corner. It is deliberately
+     quiet. The one knob worth touching is a.volume below: 0.18 now, raise toward
+     0.35 for louder, drop toward 0.10 for quieter.
 
      Browsers refuse to autoplay audio with sound until the visitor has
      interacted with the page, so if the first play() is rejected we quietly
@@ -448,7 +450,7 @@ if (new URLSearchParams(location.search).get("sent") === "1"){
   if(!btn || !a) return;
 
   var KEY = 'odyssey-music', POS = 'odyssey-music-pos';
-  a.volume = 0.30;
+  a.volume = 0.18;
 
   var want = true;
   try { want = localStorage.getItem(KEY) !== 'off'; } catch(e){}
