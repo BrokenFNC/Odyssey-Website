@@ -35,7 +35,7 @@ jobs:
 
       - name: Restore the site from the launch branch
         run: |
-          git fetch origin launch
+          git fetch origin +refs/heads/launch:refs/remotes/origin/launch
           git checkout origin/launch -- .
 
       - name: Commit and push
