@@ -106,17 +106,60 @@ h2{font-family:var(--display);font-size:clamp(32px,5vw,46px);font-weight:900;let
 .feature{grid-column:1/-1}
 @media(min-width:820px){.vgrid{grid-template-columns:1fr 1fr}}
 
-.updates{display:flex;flex-direction:column;gap:18px}
-.upd{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:12px;padding:24px 28px}
-.upd-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
-.ver{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;font-weight:700;color:var(--acc)}
-.date{font-size:12px;font-weight:600;color:var(--mute);letter-spacing:.08em;text-transform:uppercase}
-.badge{font-family:var(--display);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:999px;
-  background:var(--glow);color:var(--acc);border:1px solid rgba(255,210,31,.3)}
-.upd h3{font-size:18px;font-weight:700;margin-bottom:8px}
-.upd ul{list-style:none;display:flex;flex-direction:column;gap:6px}
-.upd li{color:var(--mute);font-size:15px;padding-left:20px;position:relative}
-.upd li::before{content:"";position:absolute;left:4px;top:11px;width:5px;height:5px;border-radius:50%;background:var(--acc)}
+/* Patch notes. One <details> per patch: the newest ships open, older ones collapse.
+   No JS needed, and the browser keeps the keyboard and screen reader behaviour for free. */
+.updates{display:flex;flex-direction:column;gap:20px}
+.patch{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:border-color .2s}
+.patch[open]{border-color:rgba(255,210,31,.34)}
+.patch>summary{list-style:none;cursor:pointer}
+.patch>summary::-webkit-details-marker{display:none}
+.patch>summary:focus-visible{outline:none;box-shadow:inset 0 0 0 2px var(--acc)}
+.patch-head{display:flex;align-items:center;gap:22px;padding:20px 26px;
+  background:linear-gradient(100deg,rgba(255,210,31,.12),rgba(255,164,21,.03) 55%,transparent)}
+.patch-head:hover .patch-name{color:var(--acc)}
+.ver{flex:0 0 auto;font-family:var(--display);font-size:clamp(26px,4.4vw,38px);font-weight:900;line-height:1;
+  letter-spacing:.01em;color:var(--acc);padding-right:22px;border-right:1px solid var(--line);
+  text-shadow:0 0 28px rgba(255,180,30,.35)}
+.ver s{text-decoration:none;font-size:.62em;opacity:.72}
+.patch-id{flex:1 1 auto;min-width:0}
+.patch-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.date{font-family:var(--display);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.badge{font-family:var(--display);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:999px;
+  background:var(--glow);color:var(--acc);border:1px solid rgba(255,210,31,.34)}
+.patch-name{font-family:var(--display);font-size:clamp(17px,2.2vw,22px);font-weight:900;line-height:1.15;
+  letter-spacing:.02em;text-transform:uppercase;transition:color .18s}
+.chev{flex:0 0 auto;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);color:var(--mute);
+  display:grid;place-items:center;font-size:11px;transition:.2s}
+.patch[open] .chev{transform:rotate(180deg);color:var(--acc);border-color:rgba(255,210,31,.4)}
+.patch-banner{position:relative;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.patch-banner img{width:100%;aspect-ratio:16/5;object-fit:cover;object-position:center 55%;filter:saturate(.72) brightness(.78)}
+/* fade the key art into the card body so the banner does not read as a hard cut */
+.patch-banner::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,8,11,.35),transparent 35%,rgba(18,20,26,.96))}
+.patch-body{padding:26px 28px 30px}
+.pn+.pn{margin-top:28px}
+.pn h4{font-family:var(--display);font-size:13px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:var(--acc);
+  display:flex;align-items:center;gap:10px;padding-bottom:9px;border-bottom:1px solid var(--line);margin-bottom:16px}
+.pn h4::before{content:"";flex:0 0 auto;width:9px;height:9px;background:var(--acc);transform:rotate(45deg)}
+.entry+.entry{margin-top:15px}
+.entry h5{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.entry p{color:var(--mute);font-size:15px}
+.fixlist{list-style:none;display:flex;flex-direction:column;gap:9px}
+.fixlist li{color:var(--mute);font-size:15px;padding-left:20px;position:relative}
+.fixlist li::before{content:"";position:absolute;left:4px;top:11px;width:5px;height:5px;border-radius:50%;background:var(--acc)}
+.fixlist b{color:var(--ink);font-weight:700}
+.pn-note{margin-top:28px;padding:16px 20px;border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:10px;
+  background:rgba(255,210,31,.05);color:var(--mute);font-size:14px}
+.pn-note b{color:var(--ink)}
+.pn-note a{color:var(--acc);border-bottom:1px solid rgba(255,210,31,.4)}
+/* on phones the head stacks: version and chevron on one row, then the title under them */
+@media(max-width:640px){
+  .patch-head{gap:12px 14px;padding:18px;flex-wrap:wrap;align-items:center}
+  .ver{order:1;flex:1 1 auto;font-size:30px;padding-right:0;border-right:0}
+  .chev{order:2}
+  .patch-id{order:3;flex:1 1 100%}
+  .patch-name{font-size:18px}
+  .patch-body{padding:20px 18px 24px}
+}
 
 /* the VOA link hidden in the Homestead blurb. Meant to read as an anomaly, not a button. */
 .voa{color:inherit;border-bottom:1px dotted rgba(255,210,31,.5);cursor:pointer;transition:.18s}
@@ -287,28 +330,141 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
 
 <section id="updates"><div class="wrap">
   <div class="sec-head">
-    <div class="sec-tag">Changelog</div>
+    <div class="sec-tag">Patch Notes</div>
     <h2>Island Updates</h2>
-    <p class="sec-sub">Patch notes and changes, newest first.</p>
+    <p class="sec-sub">Everything that has changed on the island, newest patch first.</p>
   </div>
   <div class="updates">
-    <div class="upd">
-      <div class="upd-top"><span class="ver">v2.0</span><span class="date">Season 2 Launch</span><span class="badge">Major</span></div>
-      <h3>Season 2 is live</h3>
-      <ul>
-        <li>New season content</li>
-        <li>Map expansion and new points of interest</li>
-        <li>Performance and streaming improvements</li>
-      </ul>
-    </div>
-    <div class="upd">
-      <div class="upd-top"><span class="ver">v1.0</span><span class="date">Season 1</span></div>
-      <h3>Odyssey Battle Royale launches</h3>
-      <ul>
-        <li>50-player battle royale on a fully custom island</li>
-        <li>Custom loot pool and progression</li>
-      </ul>
-    </div>
+
+    <details class="patch" open>
+      <summary>
+        <div class="patch-head">
+          <div class="ver">v2<s>.00</s></div>
+          <div class="patch-id">
+            <div class="patch-meta"><span class="badge">Major Update</span><span class="date">Season 2 Launch</span></div>
+            <div class="patch-name">The Island Falls to the VOA</div>
+          </div>
+          <div class="chev">&#9660;</div>
+        </div>
+      </summary>
+      <div class="patch-banner"><img src="img/play-bg.jpg" alt="" loading="lazy"></div>
+      <div class="patch-body">
+
+        <div class="pn">
+          <h4>What Is New</h4>
+          <div class="entry">
+            <h5>Season 2 is live</h5>
+            <p>The VOA have taken Lyssara. Jules and her resistance are fighting to take it back, and the island has changed with them.</p>
+          </div>
+          <div class="entry">
+            <h5>A bigger island</h5>
+            <p>The map now runs 2.8&nbsp;km across, with new named locations and new routes between them.</p>
+          </div>
+        </div>
+
+        <div class="pn">
+          <h4>Map</h4>
+          <div class="entry">
+            <h5>Frosted Front is now on the map</h5>
+            <p>A flash frozen wasteland left behind by the VOA's Biome Controller explosion. The resistance holds it now.</p>
+          </div>
+          <div class="entry">
+            <h5>The Resistance</h5>
+            <p>Jules' base of operations and her growing team, built to hit the VOA directly and liberate the island.</p>
+          </div>
+          <div class="entry">
+            <h5>Homestead has been rebuilt</h5>
+            <p>Once the comforting home of many Lyssara residents, it is now an industrial jungle running under VOA control.</p>
+          </div>
+          <div class="entry">
+            <h5>Mended Meadows is out of VOA hands</h5>
+            <p>The island's oldest landmark was recently liberated and is now undergoing repairs.</p>
+          </div>
+        </div>
+
+        <div class="pn">
+          <h4>Gameplay</h4>
+          <div class="entry">
+            <h5>Vehicles across the island</h5>
+            <p>Trucks and sedans now spawn along the roads, so a long rotation across the map is no longer a walk.</p>
+          </div>
+          <div class="entry">
+            <h5>Stamina</h5>
+            <p>Sprinting now draws from a stamina meter, so chasing a fight across open ground costs you something.</p>
+          </div>
+          <div class="entry">
+            <h5>Exploration Mode</h5>
+            <p>Take the island at your own pace and see what Season 2 changed without a match running around you.</p>
+          </div>
+        </div>
+
+        <div class="pn">
+          <h4>UI</h4>
+          <div class="entry">
+            <h5>Custom HUD</h5>
+            <p>Health, shield and stamina now read on a bar layout built for Odyssey instead of the default one.</p>
+          </div>
+        </div>
+
+        <div class="pn">
+          <h4>Performance</h4>
+          <div class="entry">
+            <h5>World streaming</h5>
+            <p>Ongoing work on how the island loads in and what it keeps in memory, aimed at fewer hitches when you cross between regions.</p>
+          </div>
+        </div>
+
+        <div class="pn">
+          <h4>Bug Fixes</h4>
+          <ul class="fixlist">
+            <li><b>Fixed</b> an issue where an item granter handed out one copy of its item per player in the match instead of a single item.</li>
+            <li><b>Fixed</b> the HUD bars reading fuller than your real health and shield when the values were low.</li>
+          </ul>
+        </div>
+
+        <div class="pn-note">
+          <b>Known issue:</b> footstep audio can go silent for the rest of a match. This is a Fortnite engine bug rather than something in the island, so it cannot be patched from my side. The workaround and the full list live on the <a href="bugs.html">known issues page</a>.
+        </div>
+
+      </div>
+    </details>
+
+    <details class="patch">
+      <summary>
+        <div class="patch-head">
+          <div class="ver">v1<s>.00</s></div>
+          <div class="patch-id">
+            <div class="patch-meta"><span class="badge">Launch</span><span class="date">Season 1</span></div>
+            <div class="patch-name">Odyssey Battle Royale Launches</div>
+          </div>
+          <div class="chev">&#9660;</div>
+        </div>
+      </summary>
+      <div class="patch-body">
+
+        <div class="pn">
+          <h4>What Is New</h4>
+          <div class="entry">
+            <h5>The island opens</h5>
+            <p>Up to 50 players drop onto a fully hand built island and fight until one squad is left standing.</p>
+          </div>
+        </div>
+
+        <div class="pn">
+          <h4>Gameplay</h4>
+          <div class="entry">
+            <h5>Custom loot pool</h5>
+            <p>A loot pool picked for Odyssey rather than the default one, tuned around the island's own fights.</p>
+          </div>
+          <div class="entry">
+            <h5>Progression</h5>
+            <p>Custom progression built on top of the standard battle royale loop.</p>
+          </div>
+        </div>
+
+      </div>
+    </details>
+
   </div>
 </div></section>
 
