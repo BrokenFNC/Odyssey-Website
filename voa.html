@@ -243,6 +243,92 @@ body.dying .mark{
   .screen{padding:20px 16px 16px}
   #cmd{font-size:14px}
 }
+
+/* ==========================================================================
+   VOA OS . the desktop behind the terminal
+   Reached with  cmd://exit.terminal  . The terminal is a window on this
+   machine, so leaving it drops the operator onto the shell they logged into.
+   ========================================================================== */
+#vos{position:fixed;inset:0;z-index:60;overflow:hidden;
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 38%,#12233c 0%,#0a1524 45%,#04080e 100%);
+  font-family:var(--mono);color:var(--fg);user-select:none}
+#vos[hidden]{display:none}
+
+/* the seal sits in the wallpaper, big and faint, the way an org badges its fleet */
+.vos-paper{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.vos-paper img{width:min(46vmin,420px);opacity:.07;filter:grayscale(1) brightness(2.4)}
+.vos-paper::after{content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(180deg,rgba(255,255,255,.028) 0 1px,transparent 1px 3px)}
+
+/* icon field */
+.vos-icons{position:absolute;top:26px;left:26px;bottom:74px;
+  display:grid;grid-auto-flow:column;grid-template-rows:repeat(auto-fill,104px);
+  gap:6px 4px;align-content:start}
+.vos-ico{width:108px;padding:10px 6px 8px;border:1px solid transparent;border-radius:6px;
+  background:none;font:inherit;color:inherit;cursor:pointer;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:7px}
+.vos-ico svg{width:42px;height:42px;flex:0 0 auto;pointer-events:none}
+.vos-ico span{font-size:10.5px;letter-spacing:.055em;text-transform:uppercase;line-height:1.3;
+  color:rgba(255,255,255,.86);text-shadow:0 1px 3px #000;pointer-events:none;word-break:break-word}
+.vos-ico:hover{background:rgba(120,180,255,.10);border-color:rgba(120,180,255,.20)}
+.vos-ico.sel{background:rgba(62,160,255,.24);border-color:rgba(62,160,255,.62)}
+.vos-ico:focus-visible{outline:none;border-color:#7fc0ff}
+/* a locked file still shows, it just will not open. The padlock says so up front. */
+.vos-ico.locked svg{opacity:.55}
+.vos-ico.locked span{color:rgba(255,255,255,.5)}
+
+/* taskbar */
+.vos-bar{position:absolute;left:0;right:0;bottom:0;height:46px;z-index:3;
+  display:flex;align-items:center;gap:10px;padding:0 12px;
+  background:rgba(4,10,18,.88);backdrop-filter:blur(10px);
+  border-top:1px solid rgba(120,180,255,.22)}
+.vos-start{display:flex;align-items:center;gap:9px;height:32px;padding:0 14px;border-radius:5px;
+  border:1px solid rgba(120,180,255,.3);background:rgba(62,160,255,.13);color:#bcdcff;
+  font:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase;cursor:default}
+.vos-start img{width:16px;height:16px;filter:grayscale(1) brightness(2.6)}
+.vos-tasks{display:flex;gap:8px;flex:1 1 auto;min-width:0;overflow:hidden}
+.vos-task{height:32px;padding:0 15px;border-radius:5px;max-width:230px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:rgba(255,255,255,.8);
+  font:inherit;font-size:11px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;
+  white-space:nowrap;text-overflow:ellipsis}
+.vos-task:hover{border-color:rgba(120,180,255,.5);color:#cfe6ff}
+.vos-tray{display:flex;align-items:center;gap:16px;font-size:11px;letter-spacing:.1em;
+  color:rgba(255,255,255,.62);white-space:nowrap}
+.vos-tray b{color:rgba(255,255,255,.9);font-weight:400}
+
+/* the dialog every sealed folder throws */
+.vos-modal{position:absolute;inset:0;z-index:5;display:grid;place-items:center;
+  background:rgba(2,5,10,.55)}
+.vos-modal[hidden]{display:none}
+.vos-win{width:min(420px,88vw);background:#0a1422;border:1px solid rgba(120,180,255,.34);
+  border-radius:7px;box-shadow:0 26px 70px rgba(0,0,0,.7);overflow:hidden}
+.vos-title{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:9px 12px;background:rgba(62,160,255,.14);border-bottom:1px solid rgba(120,180,255,.24);
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#bcdcff}
+.vos-x{background:none;border:0;color:inherit;font:inherit;cursor:pointer;padding:0 4px}
+.vos-x:hover{color:#fff}
+.vos-body{padding:20px 20px 18px;font-size:13px;line-height:1.6;color:rgba(255,255,255,.74)}
+.vos-body b{display:block;color:#ff6b6b;letter-spacing:.1em;text-transform:uppercase;
+  font-weight:400;font-size:12px;margin-bottom:8px}
+.vos-act{display:flex;justify-content:flex-end;padding:0 20px 18px}
+.vos-ok{height:31px;padding:0 22px;border-radius:5px;cursor:pointer;font:inherit;font-size:11px;
+  letter-spacing:.14em;text-transform:uppercase;
+  border:1px solid rgba(120,180,255,.42);background:rgba(62,160,255,.16);color:#cfe6ff}
+.vos-ok:hover{background:rgba(62,160,255,.28)}
+
+/* the hint line, so nobody is stranded on a desktop with no idea what to do */
+.vos-tip{position:absolute;right:16px;bottom:60px;z-index:2;font-size:10.5px;letter-spacing:.09em;
+  text-transform:uppercase;color:rgba(255,255,255,.34);text-align:right;line-height:1.7}
+
+@media(max-width:640px){
+  .vos-icons{top:16px;left:14px;bottom:66px;grid-template-rows:repeat(auto-fill,96px)}
+  .vos-ico{width:88px}
+  .vos-ico svg{width:36px;height:36px}
+  .vos-start span{display:none}
+  .vos-tip{display:none}
+  .vos-tray .vos-host{display:none}
+}
 </style>
 </head>
 <body class="crt">
@@ -280,6 +366,130 @@ body.dying .mark{
            autocorrect="off" spellcheck="false" aria-label="Enter input code">
   </div>
 </main>
+
+<!-- VOA OS. Hidden until the operator runs cmd://exit.terminal, and it is a sibling of
+     the terminal rather than a separate page so the session survives the trip back. -->
+<div id="vos" hidden>
+  <div class="vos-paper"><img src="img/voa-logo.png" alt=""></div>
+
+  <div class="vos-icons" id="vosIcons">
+    <button class="vos-ico" data-act="terminal">
+      <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <rect x="4" y="7" width="40" height="34" rx="3" fill="#0c1a2b" stroke="#7fc0ff" stroke-width="2"/>
+        <path d="M11 18l7 6-7 6" stroke="#7fc0ff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M23 31h13" stroke="#7fc0ff" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+      <span>VOA Secure Terminal</span>
+    </button>
+
+    <button class="vos-ico" data-act="bbb">
+      <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path d="M4 12a2 2 0 012-2h12l4 5h18a2 2 0 012 2v20a2 2 0 01-2 2H6a2 2 0 01-2-2V12z" fill="#123554" stroke="#7fc0ff" stroke-width="2"/>
+        <path d="M4 20h40" stroke="#7fc0ff" stroke-width="1.6" opacity=".55"/>
+      </svg>
+      <span>Beef Boss's Burgers</span>
+    </button>
+
+    <button class="vos-ico" data-act="sealed" data-tier="4" data-name="Trade Registry">
+      <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path d="M4 12a2 2 0 012-2h12l4 5h18a2 2 0 012 2v20a2 2 0 01-2 2H6a2 2 0 01-2-2V12z" fill="#123554" stroke="#7fc0ff" stroke-width="2"/>
+        <path d="M4 20h40" stroke="#7fc0ff" stroke-width="1.6" opacity=".55"/>
+      </svg>
+      <span>Trade Registry</span>
+    </button>
+
+    <button class="vos-ico" data-act="sealed" data-tier="5" data-name="Lyssara Survey">
+      <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path d="M4 12a2 2 0 012-2h12l4 5h18a2 2 0 012 2v20a2 2 0 01-2 2H6a2 2 0 01-2-2V12z" fill="#123554" stroke="#7fc0ff" stroke-width="2"/>
+        <path d="M4 20h40" stroke="#7fc0ff" stroke-width="1.6" opacity=".55"/>
+      </svg>
+      <span>Lyssara Survey</span>
+    </button>
+
+    <button class="vos-ico" data-act="sealed" data-tier="6" data-name="Biome Controller">
+      <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path d="M4 12a2 2 0 012-2h12l4 5h18a2 2 0 012 2v20a2 2 0 01-2 2H6a2 2 0 01-2-2V12z" fill="#123554" stroke="#7fc0ff" stroke-width="2"/>
+        <path d="M4 20h40" stroke="#7fc0ff" stroke-width="1.6" opacity=".55"/>
+      </svg>
+      <span>Biome Controller</span>
+    </button>
+
+    <button class="vos-ico" data-act="sealed" data-tier="6" data-name="TRA-04 Array">
+      <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path d="M4 12a2 2 0 012-2h12l4 5h18a2 2 0 012 2v20a2 2 0 01-2 2H6a2 2 0 01-2-2V12z" fill="#123554" stroke="#7fc0ff" stroke-width="2"/>
+        <path d="M4 20h40" stroke="#7fc0ff" stroke-width="1.6" opacity=".55"/>
+      </svg>
+      <span>TRA-04 Array</span>
+    </button>
+
+    <button class="vos-ico locked" data-act="sealed" data-tier="8" data-name="Incident Reports">
+      <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path d="M4 12a2 2 0 012-2h12l4 5h18a2 2 0 012 2v20a2 2 0 01-2 2H6a2 2 0 01-2-2V12z" fill="#123554" stroke="#7fc0ff" stroke-width="2"/>
+        <rect x="17" y="24" width="14" height="11" rx="1.6" fill="#04080e" stroke="#7fc0ff" stroke-width="2"/>
+        <path d="M20 24v-3a4 4 0 018 0v3" stroke="#7fc0ff" stroke-width="2"/>
+      </svg>
+      <span>Incident Reports</span>
+    </button>
+
+    <button class="vos-ico locked" data-act="sealed" data-tier="9" data-name="Subject J">
+      <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path d="M4 12a2 2 0 012-2h12l4 5h18a2 2 0 012 2v20a2 2 0 01-2 2H6a2 2 0 01-2-2V12z" fill="#123554" stroke="#7fc0ff" stroke-width="2"/>
+        <rect x="17" y="24" width="14" height="11" rx="1.6" fill="#04080e" stroke="#7fc0ff" stroke-width="2"/>
+        <path d="M20 24v-3a4 4 0 018 0v3" stroke="#7fc0ff" stroke-width="2"/>
+      </svg>
+      <span>Subject J</span>
+    </button>
+
+    <button class="vos-ico locked" data-act="sealed" data-tier="9" data-name="Project 72">
+      <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path d="M4 12a2 2 0 012-2h12l4 5h18a2 2 0 012 2v20a2 2 0 01-2 2H6a2 2 0 01-2-2V12z" fill="#123554" stroke="#7fc0ff" stroke-width="2"/>
+        <rect x="17" y="24" width="14" height="11" rx="1.6" fill="#04080e" stroke="#7fc0ff" stroke-width="2"/>
+        <path d="M20 24v-3a4 4 0 018 0v3" stroke="#7fc0ff" stroke-width="2"/>
+      </svg>
+      <span>Project 72</span>
+    </button>
+
+    <button class="vos-ico locked" data-act="sealed" data-tier="9" data-name="Argantha">
+      <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path d="M4 12a2 2 0 012-2h12l4 5h18a2 2 0 012 2v20a2 2 0 01-2 2H6a2 2 0 01-2-2V12z" fill="#123554" stroke="#7fc0ff" stroke-width="2"/>
+        <rect x="17" y="24" width="14" height="11" rx="1.6" fill="#04080e" stroke="#7fc0ff" stroke-width="2"/>
+        <path d="M20 24v-3a4 4 0 018 0v3" stroke="#7fc0ff" stroke-width="2"/>
+      </svg>
+      <span>Argantha</span>
+    </button>
+
+    <button class="vos-ico" data-act="bin">
+      <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path d="M13 15h22l-2 25a3 3 0 01-3 3H18a3 3 0 01-3-3L13 15z" fill="#0e2237" stroke="#7fc0ff" stroke-width="2"/>
+        <path d="M9 15h30M20 10h8" stroke="#7fc0ff" stroke-width="2" stroke-linecap="round"/>
+        <path d="M21 22v14M27 22v14" stroke="#7fc0ff" stroke-width="1.8" opacity=".6" stroke-linecap="round"/>
+      </svg>
+      <span>Recycle Bin</span>
+    </button>
+  </div>
+
+  <div class="vos-tip">
+    Double click to open<br>Terminal returns you to the session
+  </div>
+
+  <div class="vos-bar">
+    <div class="vos-start"><img src="img/voa-logo.png" alt=""><span>VOA OS</span></div>
+    <div class="vos-tasks" id="vosTasks"></div>
+    <div class="vos-tray">
+      <span class="vos-host">OPERATOR . TIER 2</span>
+      <span id="vosClock"><b>--:--</b></span>
+    </div>
+  </div>
+
+  <div class="vos-modal" id="vosModal" hidden>
+    <div class="vos-win" role="dialog" aria-modal="true" aria-labelledby="vosModalTitle">
+      <div class="vos-title"><span id="vosModalTitle">Access Control</span>
+        <button class="vos-x" type="button" data-close aria-label="Close">&times;</button></div>
+      <div class="vos-body"><b id="vosModalHead">Access denied</b><span id="vosModalText"></span></div>
+      <div class="vos-act"><button class="vos-ok" type="button" data-close>OK</button></div>
+    </div>
+  </div>
+</div>
 
 <script>
 /* ============================================================================
@@ -1654,6 +1864,7 @@ try { skipBoot = localStorage.getItem("voa_skipboot") === "1"; } catch(e){}
 let bootRushed = false;
 
 async function boot(){
+  sessionLive = true;
   bootRushed = false;
   const rush = () => { bootRushed = true; };
   window.addEventListener("keydown", rush, true);
@@ -1699,6 +1910,9 @@ function submit(raw){
   }
 
   const key = shown.toLowerCase();
+
+  // Leaving the terminal is a real command on this machine, not a link.
+  if (key === "cmd://exit.terminal"){ exitTerminal(); return; }
   if (Object.prototype.hasOwnProperty.call(CODES, key)){
     line("sys", "ACCESS GRANTED");
     line("dim", "REROUTING ...");
@@ -1921,7 +2135,163 @@ pw.addEventListener("keydown", e => {
   if (e.key.length === 1 || e.key === "Backspace") Sound.key(0.05);
 });
 
-pw.focus();
+
+/* ---- VOA OS ----------------------------------------------------------------
+   cmd://exit.terminal suspends the session and drops the operator onto the
+   machine the terminal runs on. The desktop is a sibling of <main>, not another
+   page, so coming back is just a matter of swapping which one is hidden and the
+   whole log is still there. The one trip that does leave the page, the burger
+   place, sets a session flag so the return landing is the desktop and not the
+   passphrase gate again.
+   -------------------------------------------------------------------------- */
+let sessionLive = false;                 // has the terminal log started this page load
+const DESK_KEY  = "voaDesktop";
+
+const vos       = document.getElementById("vos");
+const vosScreen = document.querySelector("main.screen");
+const vosIcons  = document.getElementById("vosIcons");
+const vosTasks  = document.getElementById("vosTasks");
+const vosClock  = document.getElementById("vosClock");
+const vosModal  = document.getElementById("vosModal");
+let clockTimer  = null;
+
+function deskFlag(on){
+  try { on ? sessionStorage.setItem(DESK_KEY, "1") : sessionStorage.removeItem(DESK_KEY); }
+  catch(e){}
+}
+
+function paintClock(){
+  const d = new Date();
+  vosClock.innerHTML = "<b>" + String(d.getHours()).padStart(2,"0") + ":" +
+                       String(d.getMinutes()).padStart(2,"0") + "</b>";
+}
+
+/* The terminal keeps a taskbar button while it is suspended, so the way back is
+   visible even if somebody never tries the desktop icon. */
+function paintTasks(){
+  vosTasks.innerHTML = "";
+  const b = document.createElement("button");
+  b.type = "button";
+  b.className = "vos-task";
+  b.textContent = sessionLive ? "VOA Secure Terminal . suspended" : "VOA Secure Terminal";
+  b.addEventListener("click", openTerminal);
+  vosTasks.appendChild(b);
+}
+
+function openDesktop(){
+  vosScreen.hidden = true;
+  vos.hidden = false;
+  cmd.disabled = true;                   // keystrokes belong to the desktop now
+  deskFlag(true);
+  paintTasks();
+  paintClock();
+  clockTimer = setInterval(paintClock, 15000);
+  const first = vosIcons.querySelector(".vos-ico");
+  if (first) first.focus();
+}
+
+function openTerminal(){
+  closeDialog();
+  vos.hidden = true;
+  vosScreen.hidden = false;
+  deskFlag(false);
+  clearInterval(clockTimer);
+  clockTimer = null;
+  Sound.startup();
+  if (!sessionLive){                     // came back to a cold page, so start a session
+    if (gate && gate.parentNode) gate.remove();
+    out.hidden = false;
+    row.hidden = false;
+    cmd.disabled = false;
+    boot();
+  } else {
+    cmd.disabled = false;
+    cmd.focus();
+  }
+}
+
+async function exitTerminal(){
+  lockInput(true);
+  Sound.hit();
+  await type("sys", "SESSION SUSPENDED", 14);
+  await wait(240);
+  await type("dim", "RELEASING TERMINAL TO SHELL ...", 12);
+  await wait(300);
+  await wait(Sound.powerDown() || 320);   // kills the terminal hum, returns its own length
+  line("gap", "");
+  lockInput(false);
+  cmd.disabled = true;
+  openDesktop();
+}
+
+/* dialogs */
+function showDialog(title, head, text){
+  document.getElementById("vosModalTitle").textContent = title;
+  document.getElementById("vosModalHead").textContent  = head;
+  document.getElementById("vosModalText").textContent  = text;
+  vosModal.hidden = false;
+  vosModal.querySelector(".vos-ok").focus();
+}
+function closeDialog(){ vosModal.hidden = true; }
+
+vosModal.addEventListener("click", e => {
+  if (e.target === vosModal || e.target.hasAttribute("data-close")) closeDialog();
+});
+
+function iconAct(el){
+  const act = el.dataset.act;
+  if (act === "terminal"){ openTerminal(); return; }
+  if (act === "bbb"){ Sound.hit(); deskFlag(true); location.href = "bbb.html"; return; }
+  if (act === "bin"){
+    Sound.hit();
+    showDialog("Recycle Bin", "Empty",
+      "Nothing has been deleted from this machine. Deletions are handled centrally and are not reversible from an operator terminal.");
+    return;
+  }
+  Sound.error();
+  showDialog(el.dataset.name || "Access Control", "Access denied",
+    (el.dataset.name || "This folder") + " requires Tier " + (el.dataset.tier || "9") +
+    " clearance. This terminal is Tier 2. Request escalation through your superior.");
+}
+
+/* Single click selects, double click opens, which is what a desktop is expected to do.
+   Enter and Space open too, so the icon field is usable from the keyboard. */
+vosIcons.addEventListener("click", e => {
+  const el = e.target.closest(".vos-ico");
+  if (!el) return;
+  vosIcons.querySelectorAll(".vos-ico.sel").forEach(n => n.classList.remove("sel"));
+  el.classList.add("sel");
+  Sound.key(0.04);
+});
+vosIcons.addEventListener("dblclick", e => {
+  const el = e.target.closest(".vos-ico");
+  if (el) iconAct(el);
+});
+vosIcons.addEventListener("keydown", e => {
+  if (e.key !== "Enter" && e.key !== " ") return;
+  const el = e.target.closest(".vos-ico");
+  if (!el) return;
+  e.preventDefault();
+  iconAct(el);
+});
+vos.addEventListener("click", e => {
+  if (e.target === vos || e.target.classList.contains("vos-paper")){
+    vosIcons.querySelectorAll(".vos-ico.sel").forEach(n => n.classList.remove("sel"));
+  }
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && !vosModal.hidden) closeDialog();
+});
+
+/* Landing here from a page the desktop opened: skip the gate, show the desktop. */
+let vosRestore = false;
+try { vosRestore = sessionStorage.getItem(DESK_KEY) === "1"; } catch(e){}
+if (vosRestore){
+  if (gate && gate.parentNode) gate.remove();
+  openDesktop();
+} else {
+  pw.focus();
+}
 </script>
 
 </body>

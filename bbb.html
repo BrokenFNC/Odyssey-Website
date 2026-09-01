@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Beef Boss's Burgers | Official Home Page</title>
+<meta name="description" content="The official home page of Beef Boss's Burgers. Now open in Stonewood. Burgers, shakes, party rooms and the whole family band.">
+<link rel="icon" type="image/png" sizes="32x32" href="img/icon-32.png">
+
+<style>
+/* ===========================================================================
+   BEEF BOSS'S BURGERS . OFFICIAL HOME PAGE
+   Built to read like a restaurant home page from about 1997: fixed width,
+   bevelled boxes, a marquee, a hit counter and a browser badge. Everything is
+   CSS rather than the real <marquee> and <blink>, which no longer render, but
+   it is all doing the job those tags used to do.
+   ========================================================================= */
+:root{
+  --blue:#3d5cf3;          /* the flat blue outside the logo glow */
+  --cream:#fff4dc;
+  --orange:#f0913c;
+  --deep:#c8571c;
+  --yellow:#ffd93b;
+  --red:#e2352b;
+  --ink:#241206;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none !important}
+body{
+  background:var(--blue) url("img/bbb-bg.jpg") center top / cover fixed no-repeat;
+  color:var(--ink);
+  font-family:"Comic Sans MS","Comic Sans",Chalkboard,"Segoe UI",cursive,sans-serif;
+  font-size:15px;line-height:1.55;
+  padding:18px 12px 40px;
+}
+img{max-width:100%;display:block;border:0}
+a{color:#0b39c8}
+a:visited{color:#6b2fb8}
+a:hover{color:var(--red)}
+
+/* the whole page sits in one fixed width column, centred, the way they all did */
+.page{width:100%;max-width:820px;margin:0 auto}
+
+/* the marquee sign bulbs, echoing the ones around the logo */
+.bulbs{height:16px;background-image:radial-gradient(circle,var(--yellow) 0 3px,rgba(0,0,0,.28) 3.4px,transparent 4px);
+  background-size:24px 16px;background-position:center;background-repeat:repeat-x}
+
+.banner{border:4px ridge var(--yellow);background:#2f4ae0;box-shadow:0 6px 22px rgba(0,0,0,.45)}
+.banner img{width:100%}
+
+/* NOW OPEN, blinking, because of course it is */
+.blinkline{text-align:center;margin:14px 0 10px}
+.blink{display:inline-block;font-weight:700;font-size:20px;letter-spacing:.04em;color:#fff800;
+  text-shadow:2px 2px 0 #b3261e,-1px -1px 0 #000;animation:blink 1.05s steps(1,end) infinite}
+@keyframes blink{0%,55%{opacity:1}56%,100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.blink{animation:none}}
+
+/* scrolling notice bar */
+.crawl{overflow:hidden;border:3px ridge #9aa8ff;background:#101a5e;color:#ffe97a;
+  font-size:14px;padding:6px 0;white-space:nowrap;margin-bottom:14px}
+.crawl span{display:inline-block;padding-left:100%;animation:crawl 22s linear infinite}
+@keyframes crawl{to{transform:translateX(-100%)}}
+@media(prefers-reduced-motion:reduce){.crawl span{animation:none;padding-left:12px}}
+
+/* navigation, bracketed link style */
+.nav{border:4px ridge var(--orange);background:var(--cream);padding:10px 12px;text-align:center;
+  margin-bottom:16px;font-size:14px}
+.nav a{margin:0 6px;white-space:nowrap;font-weight:700;text-decoration:none}
+.nav a:hover{text-decoration:underline}
+
+/* content boxes */
+.box{border:4px ridge var(--orange);background:var(--cream);padding:18px 20px 22px;margin-bottom:16px;
+  box-shadow:0 4px 14px rgba(0,0,0,.35)}
+.box h2{font-size:22px;color:var(--deep);text-align:center;margin-bottom:4px;
+  text-shadow:1px 1px 0 #fff,2px 2px 0 rgba(0,0,0,.18)}
+.box .rule{height:0;border-top:2px groove var(--orange);margin:10px 0 16px}
+.box p+p{margin-top:10px}
+.lead{text-align:center}
+
+/* menu, a real table like it should be */
+table.menu{width:100%;border-collapse:collapse;border:3px double var(--deep);background:#fffdf6}
+table.menu caption{caption-side:top;font-weight:700;color:var(--deep);padding-bottom:8px}
+table.menu th{background:var(--orange);color:#3a1b06;text-align:left;padding:7px 10px;font-size:14px;
+  border:1px solid var(--deep)}
+table.menu td{padding:7px 10px;border:1px solid #e3c9a4;font-size:14px;vertical-align:top}
+table.menu tr:nth-child(even) td{background:#fff6e4}
+table.menu td.p{text-align:right;white-space:nowrap;font-weight:700;color:var(--deep)}
+.small{font-size:12.5px;color:#6a4a2c;margin-top:10px;text-align:center}
+
+/* the band */
+.band{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+.act{flex:1 1 210px;min-width:200px;border:3px ridge var(--yellow);background:#fffdf6;padding:14px 16px 16px}
+.act h3{font-size:17px;color:var(--red);text-align:center;margin-bottom:2px}
+.act .role{display:block;text-align:center;font-size:12px;color:#7a5a3a;margin-bottom:9px}
+.act p{font-size:13.5px}
+
+/* two column strip for hours and directions */
+.cols{display:flex;flex-wrap:wrap;gap:16px}
+.col{flex:1 1 260px;min-width:240px}
+.col h3{font-size:16px;color:var(--deep);margin-bottom:8px}
+dl.hours{font-size:14px}
+dl.hours div{display:flex;justify-content:space-between;gap:12px;padding:5px 0;
+  border-bottom:1px dotted #d8b58a}
+dl.hours div:last-child{border-bottom:0}
+dl.hours dt{font-weight:700}
+
+/* the job notice, pinned up like a printed card */
+.notice{border:3px dashed var(--red);background:#fff8e8;padding:16px 18px}
+.notice h3{font-size:18px;color:var(--red);margin-bottom:4px}
+.notice ul{margin:10px 0 0 20px;font-size:14px}
+.notice li{margin-bottom:5px}
+
+/* under construction stripes */
+.works{height:20px;margin:16px 0;border:2px solid #6b5a00;
+  background:repeating-linear-gradient(45deg,#ffd400 0 12px,#231f00 12px 24px)}
+
+/* footer furniture */
+.foot{border:4px ridge var(--orange);background:var(--cream);padding:16px 18px;text-align:center;font-size:13px}
+.counter{display:inline-flex;gap:3px;margin:6px 0 10px}
+.counter b{background:#0b0b0b;color:#37ff5e;font-family:"Courier New",monospace;font-weight:700;
+  font-size:18px;padding:3px 6px;border:2px inset #6f6f6f}
+.badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px}
+.badge{border:2px outset #cfcfcf;background:linear-gradient(#f4f4f4,#d2d2d2);color:#222;
+  font-family:"MS Sans Serif",Tahoma,Verdana,sans-serif;font-size:10px;padding:4px 8px;line-height:1.35}
+.fine{margin-top:12px;font-size:11.5px;color:#6a4a2c;line-height:1.5}
+
+/* the sound switch and the way back, both styled like old chrome buttons */
+.tools{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;margin-bottom:14px}
+.chrome{font-family:"MS Sans Serif",Tahoma,Verdana,sans-serif;font-size:12px;cursor:pointer;
+  border:2px outset #d8d8d8;background:linear-gradient(#f6f6f6,#cfcfcf);color:#111;padding:6px 12px;
+  text-decoration:none;display:inline-block}
+.chrome:hover{background:linear-gradient(#ffffff,#dcdcdc)}
+.chrome:active{border-style:inset}
+#snd{min-width:210px;text-align:center}
+
+@media(max-width:640px){
+  body{padding:12px 8px 30px}
+  .box{padding:14px 14px 18px}
+  .nav a{display:inline-block;margin:3px 5px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="tools">
+    <button class="chrome" id="snd" type="button" aria-pressed="false">&#9834; MUSIC: OFF</button>
+    <a class="chrome" href="voa.html">&lt;&lt; Back to desktop</a>
+  </div>
+
+  <div class="bulbs"></div>
+  <div class="banner"><img src="img/bbb-logo.jpg" alt="Beef Boss's Burgers. For the whole family."></div>
+  <div class="bulbs"></div>
+
+  <div class="blinkline"><span class="blink">&#9733; NOW OPEN IN STONEWOOD &#9733;</span></div>
+
+  <div class="crawl"><span>WELCOME TO THE OFFICIAL BEEF BOSS'S BURGERS HOME PAGE &nbsp; &#9679; &nbsp; NOW OPEN IN STONEWOOD &nbsp; &#9679; &nbsp; FOUR LIVE SHOWS EVERY DAY &nbsp; &#9679; &nbsp; BOOK THE PARTY ROOM FOR YOUR BIRTHDAY &nbsp; &#9679; &nbsp; NIGHT SECURITY WANTED, APPLY WITHIN &nbsp; &#9679; &nbsp; THANK YOU FOR VISITING</span></div>
+
+  <div class="nav">
+    <a href="#welcome">[ HOME ]</a>
+    <a href="#menu">[ MENU ]</a>
+    <a href="#band">[ THE BAND ]</a>
+    <a href="#visit">[ VISIT US ]</a>
+    <a href="#jobs">[ JOBS ]</a>
+  </div>
+
+  <div class="box" id="welcome">
+    <h2>Welcome to Beef Boss's Burgers!</h2>
+    <div class="rule"></div>
+    <p class="lead">Hi there, and thanks for stopping by our home page!</p>
+    <p>We are the newest family restaurant in Stonewood and we are open for business at last. Every burger is cooked to order on our own grill, every shake is made in front of you, and every single day the band plays four full shows on our brand new stage.</p>
+    <p>Bring the kids, bring the grandparents, bring the whole street. There is a table with your name on it and Beef Boss himself will come out to say hello.</p>
+  </div>
+
+  <div class="box" id="menu">
+    <h2>Our Menu</h2>
+    <div class="rule"></div>
+    <table class="menu">
+      <caption>Everything is cooked to order, so hang on to your number!</caption>
+      <tbody>
+        <tr><th colspan="2">FROM THE GRILL</th></tr>
+        <tr><td><b>The Beef Boss</b><br>Double patty, house sauce, pickles, and a bun we bake out the back every morning.</td><td class="p">8.50</td></tr>
+        <tr><td><b>Durrr Deluxe</b><br>Single patty stacked with cheese, crispy onion and a fistful of lettuce.</td><td class="p">7.25</td></tr>
+        <tr><td><b>Little Boss</b><br>Kid sized burger, fries and a drink. Comes with a paper crown.</td><td class="p">5.00</td></tr>
+        <tr><th colspan="2">ON THE SIDE</th></tr>
+        <tr><td><b>Loaded Fries</b><br>Cheese, bacon bits and pickled jalapenos. Big enough to share.</td><td class="p">4.75</td></tr>
+        <tr><td><b>Onion Rings</b><br>A basket of them, straight out of the fryer.</td><td class="p">3.95</td></tr>
+        <tr><th colspan="2">TO DRINK</th></tr>
+        <tr><td><b>Thick Shakes</b><br>Vanilla, chocolate, strawberry, or the blue one nobody can name.</td><td class="p">3.50</td></tr>
+        <tr><th colspan="2">FOR THE TABLE</th></tr>
+        <tr><td><b>Party Platter</b><br>Eight burgers, four fries and a jug of soda. Feeds a whole table of birthday guests.</td><td class="p">32.00</td></tr>
+      </tbody>
+    </table>
+    <p class="small">Allergen information is on the board by the counter. Just ask any member of staff and we will talk you through it.</p>
+  </div>
+
+  <div class="box" id="band">
+    <h2>Meet the Band</h2>
+    <div class="rule"></div>
+    <p class="lead">Four shows a day, every day, right through to close. They have been practising!</p>
+    <div class="rule"></div>
+    <div class="band">
+      <div class="act">
+        <h3>Beef Boss</h3>
+        <span class="role">Lead vocals and the grill</span>
+        <p>The boss himself. He runs the kitchen, he runs the stage, and he knows every birthday in the room by name. Ask him for the closing number.</p>
+      </div>
+      <div class="act">
+        <h3>Tomato Head</h3>
+        <span class="role">Guitar and backing vocals</span>
+        <p>Loud, fast and never once out of tune. He takes requests between songs and he has never turned one down yet.</p>
+      </div>
+      <div class="act">
+        <h3>Tender Defender</h3>
+        <span class="role">Drums and crowd patrol</span>
+        <p>Keeps time for the whole band and waves at every table on his way past. Nothing gets by him.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="box" id="visit">
+    <h2>Come and See Us</h2>
+    <div class="rule"></div>
+    <div class="cols">
+      <div class="col">
+        <h3>Opening Hours</h3>
+        <dl class="hours">
+          <div><dt>Monday to Thursday</dt><dd>11:00 to 22:00</dd></div>
+          <div><dt>Friday and Saturday</dt><dd>11:00 to 00:00</dd></div>
+          <div><dt>Sunday</dt><dd>11:00 to 21:00</dd></div>
+          <div><dt>Party rooms</dt><dd>By booking only</dd></div>
+        </dl>
+      </div>
+      <div class="col">
+        <h3>Where to Find Us</h3>
+        <p>Stonewood, on the corner by the old lot. You will see the sign from the road. We made sure of that.</p>
+        <p>Parking is free and there is a drop off bay right outside the doors.</p>
+        <h3 style="margin-top:14px">Book a Party</h3>
+        <p>Two party rooms, both with their own view of the stage. Call ahead or ask at the counter. Weekends fill up fast!</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="box" id="jobs">
+    <h2>We Are Hiring</h2>
+    <div class="rule"></div>
+    <div class="notice">
+      <h3>WANTED: Night Security</h3>
+      <p>We are looking for somebody to watch the building between midnight and 06:00, six nights a week.</p>
+      <ul>
+        <li>No experience required.</li>
+        <li>Applications accepted immediately.</li>
+        <li>Training is one tape, played on your first shift.</li>
+        <li>The cameras are already installed, so there is no need to leave the office.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="works"></div>
+
+  <div class="foot">
+    <div>You are visitor number</div>
+    <div class="counter" id="hits" aria-label="visitor counter"></div>
+    <div>Thanks for dropping by! Tell your friends about us.</div>
+    <div class="badges">
+      <span class="badge">Best viewed at 800 x 600</span>
+      <span class="badge">Made with Notepad</span>
+      <span class="badge">This page is under construction</span>
+      <span class="badge">Sound: ON is better</span>
+    </div>
+    <div class="fine">
+      Beef Boss's Burgers, Stonewood. Operated by Durrr-Time Entertainment.<br>
+      All characters appearing on stage are the property of Durrr-Time Entertainment.<br>
+      This page last updated 14 August.
+    </div>
+    <div style="margin-top:14px"><a class="chrome" href="voa.html">&lt;&lt; Back to desktop</a></div>
+  </div>
+
+  <div class="bulbs" style="margin-top:16px"></div>
+</div>
+
+<script>
+/* ---------------------------------------------------------------------------
+   The hit counter. Not a real one, obviously, but it should not sit on the
+   same number every visit either, so it walks up slowly and keeps its place.
+   ------------------------------------------------------------------------- */
+(function(){
+  const el = document.getElementById("hits");
+  let n = 0;
+  try { n = parseInt(localStorage.getItem("bbbHits") || "0", 10) || 0; } catch(e){}
+  if (!n) n = 21847 + Math.floor(Math.random() * 400);
+  n += 1;
+  try { localStorage.setItem("bbbHits", String(n)); } catch(e){}
+  el.innerHTML = String(n).padStart(6, "0").split("").map(d => "<b>" + d + "</b>").join("");
+})();
+
+/* ---------------------------------------------------------------------------
+   ARCADE MUSIC
+   A little chiptune built out of oscillators rather than an audio file, so the
+   page stays light. Everything runs through a hard quantising waveshaper,
+   which is what gives it the crushed, low bit depth arcade edge.
+
+   A browser will not start audio until the visitor has interacted with the
+   page, so the track arms itself on the first click, key or scroll and the
+   button says where things stand. The choice is remembered.
+   ------------------------------------------------------------------------- */
+(function(){
+  const btn = document.getElementById("snd");
+  const AC  = window.AudioContext || window.webkitAudioContext;
+  if (!AC){ btn.hidden = true; return; }
+
+  let ctx = null, master = null, crush = null, timer = null;
+  let step = 0, nextTime = 0, want = true, running = false;
+
+  // On by default. Only an explicit switch off is remembered.
+  try { want = localStorage.getItem("bbbMusic") !== "0"; } catch(e){}
+
+  const BPM   = 132;
+  const SPB   = 60 / BPM / 2;              // one eighth note
+  const AHEAD = 0.12;                      // scheduler lookahead in seconds
+
+  const midi = n => 440 * Math.pow(2, (n - 69) / 12);
+
+  /* Four bars of eighth notes. Null is a rest. */
+  const LEAD = [
+    67,72,76,79, 76,72,74,76,
+    77,76,74,72, 74,71,67,null,
+    67,74,77,81, 79,77,76,74,
+    72,76,79,84, 83,79,76,72
+  ];
+  /* Root note per half bar, so the bass changes under the melody. */
+  const BASS = [
+    36,36,36,36, 41,41,41,41,
+    43,43,43,43, 36,36,36,36,
+    36,36,36,36, 41,41,41,41,
+    43,43,43,43, 43,43,43,43
+  ];
+
+  /* A staircase transfer curve. Rounding the signal to a handful of steps is
+     exactly what a low bit depth converter does, hence the crunch. */
+  function crushCurve(levels){
+    const n = 1024, c = new Float32Array(n);
+    for (let i = 0; i < n; i++){
+      const x = (i / (n - 1)) * 2 - 1;
+      c[i] = Math.round(x * levels) / levels;
+    }
+    return c;
+  }
+
+  function build(){
+    ctx = new AC();
+    master = ctx.createGain();
+    master.gain.value = 0.16;              // arcade cabinet across the room, not in your lap
+
+    crush = ctx.createWaveShaper();
+    crush.curve = crushCurve(7);
+    crush.oversample = "none";
+
+    const tone = ctx.createBiquadFilter();  // shaves the worst of the aliasing fizz
+    tone.type = "lowpass";
+    tone.frequency.value = 5200;
+
+    crush.connect(tone);
+    tone.connect(master);
+    master.connect(ctx.destination);
+  }
+
+  function blip(freq, at, dur, type, vol){
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = type;
+    o.frequency.setValueAtTime(freq, at);
+    g.gain.setValueAtTime(0.0001, at);
+    g.gain.linearRampToValueAtTime(vol, at + 0.008);
+    g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+    o.connect(g); g.connect(crush);
+    o.start(at); o.stop(at + dur + 0.02);
+  }
+
+  function hat(at, vol){
+    const len = Math.floor(ctx.sampleRate * 0.05);
+    const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len);
+    const s = ctx.createBufferSource(); s.buffer = buf;
+    const hp = ctx.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = 6000;
+    const g = ctx.createGain(); g.gain.value = vol;
+    s.connect(hp); hp.connect(g); g.connect(crush);
+    s.start(at);
+  }
+
+  function scheduler(){
+    while (nextTime < ctx.currentTime + AHEAD){
+      const i = step % LEAD.length;
+      const n = LEAD[i];
+      if (n !== null) blip(midi(n), nextTime, SPB * 0.86, "square", 0.30);
+      if (i % 2 === 0) blip(midi(BASS[i]), nextTime, SPB * 1.5, "triangle", 0.42);
+      hat(nextTime, i % 2 ? 0.10 : 0.05);
+      nextTime += SPB;
+      step++;
+    }
+  }
+
+  async function start(){
+    if (running) return;
+    if (!ctx) build();
+    try { await ctx.resume(); } catch(e){}
+    if (ctx.state !== "running"){ paint(); return; }   // still waiting on a real gesture
+    running = true;
+    step = 0;
+    nextTime = ctx.currentTime + 0.08;
+    timer = setInterval(scheduler, 25);
+    paint();
+  }
+
+  function stop(){
+    running = false;
+    clearInterval(timer);
+    timer = null;
+    if (ctx) ctx.suspend();
+    paint();
+  }
+
+  function paint(){
+    btn.textContent = running ? "♪ MUSIC: ON" : (want ? "♪ MUSIC: PRESS ANY KEY" : "♪ MUSIC: OFF");
+    btn.setAttribute("aria-pressed", String(running));
+  }
+
+  btn.addEventListener("click", () => {
+    want = !running;
+    try { localStorage.setItem("bbbMusic", want ? "1" : "0"); } catch(e){}
+    want ? start() : stop();
+  });
+
+  /* First interaction of any kind is the gesture the browser is waiting for. */
+  const ARM = ["pointerdown","keydown","touchstart","wheel"];
+  function arm(){
+    ARM.forEach(t => window.removeEventListener(t, arm, true));
+    if (want) start();
+  }
+  ARM.forEach(t => window.addEventListener(t, arm, true));
+
+  // Try straight away. Arriving from the desktop counts as a gesture in most
+  // browsers, so the track usually starts here rather than waiting for arm().
+  if (want) start();
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden && running) ctx.suspend();
+    else if (!document.hidden && running) ctx.resume();
+  });
+
+  paint();
+})();
+</script>
+
+</body>
+</html>
