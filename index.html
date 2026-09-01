@@ -30,7 +30,7 @@
 :root{
   --bg:#07080b; --panel:#12141a; --line:#232733;
   --ink:#f2f4f8; --mute:#8b93a4;
-  --acc:#ffd21f; --acc2:#ffa415; --glow:rgba(255,210,31,.18);
+  --acc:#ffd21f; --acc2:#ffa415; --glow:rgba(255,210,31,.18); --accRGB:255,210,31;
   --max:1120px;
   --display:'Azo Sans Uber',Impact,'Arial Black',system-ui,sans-serif;
   --body:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
@@ -110,27 +110,31 @@ h2{font-family:var(--display);font-size:clamp(32px,5vw,46px);font-weight:900;let
    No JS needed, and the browser keeps the keyboard and screen reader behaviour for free. */
 .updates{display:flex;flex-direction:column;gap:20px}
 .patch{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:border-color .2s}
-.patch[open]{border-color:rgba(255,210,31,.34)}
+.patch[open]{border-color:rgba(var(--accRGB),.34)}
+/* Season 2 runs on the blue season colour, the same one .stag.s2 already uses on the trailers */
+.patch.s2{--acc:#3ea0ff;--acc2:#2b6fff;--glow:rgba(62,160,255,.16);--accRGB:62,160,255}
 .patch>summary{list-style:none;cursor:pointer}
 .patch>summary::-webkit-details-marker{display:none}
 .patch>summary:focus-visible{outline:none;box-shadow:inset 0 0 0 2px var(--acc)}
 .patch-head{display:flex;align-items:center;gap:22px;padding:20px 26px;
-  background:linear-gradient(100deg,rgba(255,210,31,.12),rgba(255,164,21,.03) 55%,transparent)}
+  background:linear-gradient(100deg,rgba(var(--accRGB),.12),rgba(var(--accRGB),.03) 55%,transparent)}
 .patch-head:hover .patch-name{color:var(--acc)}
 .ver{flex:0 0 auto;font-family:var(--display);font-size:clamp(26px,4.4vw,38px);font-weight:900;line-height:1;
   letter-spacing:.01em;color:var(--acc);padding-right:22px;border-right:1px solid var(--line);
-  text-shadow:0 0 28px rgba(255,180,30,.35)}
+  text-shadow:0 0 28px rgba(var(--accRGB),.35)}
 .ver s{text-decoration:none;font-size:.62em;opacity:.72}
 .patch-id{flex:1 1 auto;min-width:0}
 .patch-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
 .date{font-family:var(--display);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.when{display:inline-flex;align-items:center;gap:9px;font-family:var(--display);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.when::before{content:"";width:3px;height:3px;border-radius:50%;background:currentColor;opacity:.55}
 .badge{font-family:var(--display);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:999px;
-  background:var(--glow);color:var(--acc);border:1px solid rgba(255,210,31,.34)}
+  background:var(--glow);color:var(--acc);border:1px solid rgba(var(--accRGB),.34)}
 .patch-name{font-family:var(--display);font-size:clamp(17px,2.2vw,22px);font-weight:900;line-height:1.15;
   letter-spacing:.02em;text-transform:uppercase;transition:color .18s}
 .chev{flex:0 0 auto;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);color:var(--mute);
   display:grid;place-items:center;font-size:11px;transition:.2s}
-.patch[open] .chev{transform:rotate(180deg);color:var(--acc);border-color:rgba(255,210,31,.4)}
+.patch[open] .chev{transform:rotate(180deg);color:var(--acc);border-color:rgba(var(--accRGB),.4)}
 .patch-banner{position:relative;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .patch-banner img{width:100%;aspect-ratio:16/5;object-fit:cover;object-position:center 55%;filter:saturate(.72) brightness(.78)}
 /* fade the key art into the card body so the banner does not read as a hard cut */
@@ -148,9 +152,9 @@ h2{font-family:var(--display);font-size:clamp(32px,5vw,46px);font-weight:900;let
 .fixlist li::before{content:"";position:absolute;left:4px;top:11px;width:5px;height:5px;border-radius:50%;background:var(--acc)}
 .fixlist b{color:var(--ink);font-weight:700}
 .pn-note{margin-top:28px;padding:16px 20px;border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:10px;
-  background:rgba(255,210,31,.05);color:var(--mute);font-size:14px}
+  background:rgba(var(--accRGB),.05);color:var(--mute);font-size:14px}
 .pn-note b{color:var(--ink)}
-.pn-note a{color:var(--acc);border-bottom:1px solid rgba(255,210,31,.4)}
+.pn-note a{color:var(--acc);border-bottom:1px solid rgba(var(--accRGB),.4)}
 /* on phones the head stacks: version and chevron on one row, then the title under them */
 @media(max-width:640px){
   .patch-head{gap:12px 14px;padding:18px;flex-wrap:wrap;align-items:center}
@@ -158,6 +162,7 @@ h2{font-family:var(--display);font-size:clamp(32px,5vw,46px);font-weight:900;let
   .chev{order:2}
   .patch-id{order:3;flex:1 1 100%}
   .patch-name{font-size:18px}
+  .when::before{display:none} /* the date wraps to its own line here, so the separator dot would dangle */
   .patch-body{padding:20px 18px 24px}
 }
 
@@ -336,13 +341,13 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
   </div>
   <div class="updates">
 
-    <details class="patch" open>
+    <details class="patch s2" open>
       <summary>
         <div class="patch-head">
-          <div class="ver">v2<s>.00</s></div>
+          <div class="ver">v2<s>.0</s></div>
           <div class="patch-id">
-            <div class="patch-meta"><span class="badge">Major Update</span><span class="date">Season 2 Launch</span></div>
-            <div class="patch-name">The Island Falls to the VOA</div>
+            <div class="patch-meta"><span class="badge">Major Update</span><span class="date">Season 2 Launch</span><span class="when"><time datetime="2026-08-31">August 31, 2026</time></span></div>
+            <div class="patch-name">Patch Notes</div>
           </div>
           <div class="chev">&#9660;</div>
         </div>
@@ -432,10 +437,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
     <details class="patch">
       <summary>
         <div class="patch-head">
-          <div class="ver">v1<s>.00</s></div>
+          <div class="ver">v1<s>.0</s></div>
           <div class="patch-id">
             <div class="patch-meta"><span class="badge">Launch</span><span class="date">Season 1</span></div>
-            <div class="patch-name">Odyssey Battle Royale Launches</div>
+            <div class="patch-name">Patch Notes</div>
           </div>
           <div class="chev">&#9660;</div>
         </div>
