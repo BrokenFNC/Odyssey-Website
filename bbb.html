@@ -145,7 +145,7 @@ dl.hours dt{font-weight:700}
 
   <div class="tools">
     <button class="chrome" id="snd" type="button" aria-pressed="false">&#9834; MUSIC: OFF</button>
-    <a class="chrome" href="voa.html">&lt;&lt; Back to desktop</a>
+    <span class="way-back" hidden></span>
   </div>
 
   <div class="bulbs"></div>
@@ -273,13 +273,39 @@ dl.hours dt{font-weight:700}
       All characters appearing on stage are the property of Durrr-Time Entertainment.<br>
       This page last updated 14 August.
     </div>
-    <div style="margin-top:14px"><a class="chrome" href="voa.html">&lt;&lt; Back to desktop</a></div>
+    <div class="way-back" style="margin-top:14px" hidden></div>
   </div>
 
   <div class="bulbs" style="margin-top:16px"></div>
 </div>
 
 <script>
+/* ---------------------------------------------------------------------------
+   This page has two lives. On its own it is simply the restaurant's home page,
+   and nothing in this file names or links anywhere else, which is what makes
+   it safe to hand out as a link by itself.
+
+   When something opens it and leaves a return path in sessionStorage, a way
+   back is built into the empty slots. The path comes from the opener rather
+   than being written here, so the standalone version gives nothing away.
+   ------------------------------------------------------------------------- */
+(function(){
+  let back = "";
+  try { back = sessionStorage.getItem("deskReturn") || ""; } catch(e){}
+  // A plain relative page name and nothing else. Never send anyone to whatever
+  // happens to be sitting in storage.
+  if (!/^[a-z0-9._-]+\.html$/i.test(back)) return;
+
+  document.querySelectorAll(".way-back").forEach(slot => {
+    const a = document.createElement("a");
+    a.className = "chrome";
+    a.href = back;
+    a.textContent = "<< Back to desktop";
+    slot.appendChild(a);
+    slot.hidden = false;
+  });
+})();
+
 /* ---------------------------------------------------------------------------
    The hit counter. Not a real one, obviously, but it should not sit on the
    same number every visit either, so it walks up slowly and keeps its place.

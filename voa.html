@@ -2241,7 +2241,14 @@ vosModal.addEventListener("click", e => {
 function iconAct(el){
   const act = el.dataset.act;
   if (act === "terminal"){ openTerminal(); return; }
-  if (act === "bbb"){ Sound.hit(); deskFlag(true); location.href = "bbb.html"; return; }
+  if (act === "bbb"){
+    Sound.hit();
+    deskFlag(true);
+    // The burger page carries no link back of its own, so hand it one on the way out.
+    try { sessionStorage.setItem("deskReturn", "voa.html"); } catch(e){}
+    location.href = "bbb.html";
+    return;
+  }
   if (act === "bin"){
     Sound.hit();
     showDialog("Recycle Bin", "Empty",
