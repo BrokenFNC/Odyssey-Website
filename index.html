@@ -166,16 +166,36 @@ h2{font-family:var(--display);font-size:clamp(32px,5vw,46px);font-weight:900;let
   .patch-body{padding:20px 18px 24px}
 }
 
-/* the VOA link hidden in the Homestead blurb. Meant to read as an anomaly, not a button. */
-.voa{color:inherit;border-bottom:1px dotted rgba(255,210,31,.5);cursor:pointer;transition:.18s}
-.voa:hover{color:var(--acc);border-bottom-color:var(--acc);text-shadow:0 0 12px rgba(255,210,31,.5)}
+/* The VOA link hidden in the Homestead blurb. Still an in-world anomaly rather than a button,
+   but it now glows and pulses so it reads as something you are meant to click. */
+.voa{color:var(--acc);font-weight:700;letter-spacing:.02em;border-bottom:1px solid var(--acc);
+  cursor:pointer;transition:color .18s,border-color .18s;animation:voaPulse 2.4s ease-in-out infinite}
+.voa:hover{color:#fff;border-bottom-color:#fff;animation:none;text-shadow:0 0 18px rgba(255,210,31,.95)}
+@keyframes voaPulse{
+  0%,100%{text-shadow:0 0 7px rgba(255,210,31,.3)}
+  50%{text-shadow:0 0 17px rgba(255,210,31,.8)}
+}
+@media(prefers-reduced-motion:reduce){.voa{animation:none;text-shadow:0 0 12px rgba(255,210,31,.55)}}
 
 .mapshot{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel)}
 .mapshot img{width:100%}
 
+/* The island section runs the map and the patch notes side by side. Below 1000px they stack,
+   map first, with a rule between them instead of the divider. */
+.islandgrid{display:grid;gap:32px}
+.islandcol{min-width:0;scroll-margin-top:90px}
+.islandcol+.islandcol{border-top:1px solid var(--line);padding-top:34px}
+@media(min-width:1000px){
+  .islandgrid{grid-template-columns:1fr 1fr;align-items:start}
+  .islandcol+.islandcol{border-top:0;padding-top:0;border-left:1px solid var(--line);padding-left:32px}
+}
+.colhead{font-family:var(--display);font-size:clamp(19px,2.2vw,25px);font-weight:900;line-height:1.1;
+  letter-spacing:.02em;text-transform:uppercase}
+.colsub{color:var(--mute);font-size:14px;margin:9px 0 22px}
+/* the info panel sits under the map inside its column, so it needs its own gap */
+.islandcol .mapinfo{margin-top:22px}
+
 /* interactive map */
-.maplayout{display:grid;gap:22px}
-@media(min-width:900px){.maplayout{grid-template-columns:1fr 330px;align-items:start}}
 .mapviewer{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:14px;
   background:#0c1420;aspect-ratio:1/1;cursor:grab;touch-action:none;user-select:none}
 .mapviewer.grabbing{cursor:grabbing}
@@ -282,8 +302,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
   <a href="#" class="nav-logo"><img src="img/odyssey-logo-sm.png" alt="Odyssey Battle Royale"></a>
   <div class="navlinks">
     <a href="#trailers">Trailers</a>
-    <a href="#updates">Updates</a>
     <a href="#map">Map</a>
+    <a href="#updates">Updates</a>
     <a href="bugs.html">Bugs</a>
     <a href="#about-me">About</a>
     <a href="#play">Play</a>
@@ -333,184 +353,187 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
   </div>
 </div></section>
 
-<section id="updates"><div class="wrap">
-  <div class="sec-head">
-    <div class="sec-tag">Patch Notes</div>
-    <h2>Island Updates</h2>
-    <p class="sec-sub">Everything that has changed on the island, newest patch first.</p>
-  </div>
-  <div class="updates">
-
-    <details class="patch s2" open>
-      <summary>
-        <div class="patch-head">
-          <div class="ver">v2<s>.0</s></div>
-          <div class="patch-id">
-            <div class="patch-meta"><span class="badge">Major Update</span><span class="date">Season 2 Launch</span><span class="when"><time datetime="2026-08-31">August 31, 2026</time></span></div>
-            <div class="patch-name">Patch Notes</div>
-          </div>
-          <div class="chev">&#9660;</div>
-        </div>
-      </summary>
-      <div class="patch-banner"><img src="img/play-bg.jpg" alt="" loading="lazy"></div>
-      <div class="patch-body">
-
-        <div class="pn">
-          <h4>What Is New</h4>
-          <div class="entry">
-            <h5>Season 2 is live</h5>
-            <p>The VOA have taken Lyssara. Jules and her resistance are fighting to take it back, and the island has changed with them.</p>
-          </div>
-          <div class="entry">
-            <h5>A bigger island</h5>
-            <p>The map now runs 2.8&nbsp;km across, with new named locations and new routes between them.</p>
-          </div>
-        </div>
-
-        <div class="pn">
-          <h4>Map</h4>
-          <div class="entry">
-            <h5>Frosted Front is now on the map</h5>
-            <p>A flash frozen wasteland left behind by the VOA's Biome Controller explosion. The resistance holds it now.</p>
-          </div>
-          <div class="entry">
-            <h5>The Resistance</h5>
-            <p>Jules' base of operations and her growing team, built to hit the VOA directly and liberate the island.</p>
-          </div>
-          <div class="entry">
-            <h5>Homestead has been rebuilt</h5>
-            <p>Once the comforting home of many Lyssara residents, it is now an industrial jungle running under VOA control.</p>
-          </div>
-          <div class="entry">
-            <h5>Mended Meadows is out of VOA hands</h5>
-            <p>The island's oldest landmark was recently liberated and is now undergoing repairs.</p>
-          </div>
-        </div>
-
-        <div class="pn">
-          <h4>Gameplay</h4>
-          <div class="entry">
-            <h5>Vehicles across the island</h5>
-            <p>Trucks and sedans now spawn along the roads, so a long rotation across the map is no longer a walk.</p>
-          </div>
-          <div class="entry">
-            <h5>Stamina</h5>
-            <p>Sprinting now draws from a stamina meter, so chasing a fight across open ground costs you something.</p>
-          </div>
-          <div class="entry">
-            <h5>Exploration Mode</h5>
-            <p>Take the island at your own pace and see what Season 2 changed without a match running around you.</p>
-          </div>
-        </div>
-
-        <div class="pn">
-          <h4>UI</h4>
-          <div class="entry">
-            <h5>Custom HUD</h5>
-            <p>Health, shield and stamina now read on a bar layout built for Odyssey instead of the default one.</p>
-          </div>
-        </div>
-
-        <div class="pn">
-          <h4>Performance</h4>
-          <div class="entry">
-            <h5>World streaming</h5>
-            <p>Ongoing work on how the island loads in and what it keeps in memory, aimed at fewer hitches when you cross between regions.</p>
-          </div>
-        </div>
-
-        <div class="pn">
-          <h4>Bug Fixes</h4>
-          <ul class="fixlist">
-            <li><b>Fixed</b> an issue where an item granter handed out one copy of its item per player in the match instead of a single item.</li>
-            <li><b>Fixed</b> the HUD bars reading fuller than your real health and shield when the values were low.</li>
-          </ul>
-        </div>
-
-        <div class="pn-note">
-          <b>Known issue:</b> footstep audio can go silent for the rest of a match. This is a Fortnite engine bug rather than something in the island, so it cannot be patched from my side. The workaround and the full list live on the <a href="bugs.html">known issues page</a>.
-        </div>
-
-      </div>
-    </details>
-
-    <details class="patch">
-      <summary>
-        <div class="patch-head">
-          <div class="ver">v1<s>.0</s></div>
-          <div class="patch-id">
-            <div class="patch-meta"><span class="badge">Launch</span><span class="date">Season 1</span></div>
-            <div class="patch-name">Patch Notes</div>
-          </div>
-          <div class="chev">&#9660;</div>
-        </div>
-      </summary>
-      <div class="patch-body">
-
-        <div class="pn">
-          <h4>What Is New</h4>
-          <div class="entry">
-            <h5>The island opens</h5>
-            <p>Up to 50 players drop onto a fully hand built island and fight until one squad is left standing.</p>
-          </div>
-        </div>
-
-        <div class="pn">
-          <h4>Gameplay</h4>
-          <div class="entry">
-            <h5>Custom loot pool</h5>
-            <p>A loot pool picked for Odyssey rather than the default one, tuned around the island's own fights.</p>
-          </div>
-          <div class="entry">
-            <h5>Progression</h5>
-            <p>Custom progression built on top of the standard battle royale loop.</p>
-          </div>
-        </div>
-
-      </div>
-    </details>
-
-  </div>
-</div></section>
-
 <section id="map"><div class="wrap">
   <div class="sec-head">
     <div class="sec-tag">The Island</div>
-    <h2>Season 2 Map</h2>
-    <p class="sec-sub">Scroll to zoom, drag to pan, and click a location to read about it.</p>
+    <h2>Season 2 Map &amp; Updates</h2>
+    <p class="sec-sub">The island on one side, everything that has changed on it on the other.</p>
   </div>
 
-  <div class="maplayout">
-    <div class="mapviewer" id="mapViewer">
-      <div class="mapstage" id="mapStage">
-        <img src="img/season2-map.jpg" alt="Odyssey Season 2 map" draggable="false">
-        <button class="poi" data-poi="homestead"  style="left:36.0%;top:44.0%"><i></i></button>
-        <button class="poi" data-poi="beach"      style="left:45.5%;top:18.5%"><i></i></button>
-        <button class="poi" data-poi="suburbs"    style="left:75.0%;top:32.5%"><i></i></button>
-        <button class="poi" data-poi="lake"       style="left:63.5%;top:45.5%"><i></i></button>
-        <button class="poi" data-poi="fields"     style="left:53.0%;top:53.5%"><i></i></button>
-        <button class="poi" data-poi="resistance" style="left:54.0%;top:62.0%"><i></i></button>
-        <button class="poi" data-poi="frosted"    style="left:30.0%;top:62.5%"><i></i></button>
-        <button class="poi" data-poi="meadows"    style="left:62.0%;top:78.5%"><i></i></button>
+  <div class="islandgrid">
+
+    <div class="islandcol">
+      <div class="colhead">Season 2 Map</div>
+      <p class="colsub">Scroll to zoom, drag to pan, and click a location to read about it.</p>
+      <div class="mapviewer" id="mapViewer">
+        <div class="mapstage" id="mapStage">
+          <img src="img/season2-map.jpg" alt="Odyssey Season 2 map" draggable="false">
+          <button class="poi" data-poi="homestead"  style="left:36.0%;top:44.0%"><i></i></button>
+          <button class="poi" data-poi="beach"      style="left:45.5%;top:18.5%"><i></i></button>
+          <button class="poi" data-poi="suburbs"    style="left:75.0%;top:32.5%"><i></i></button>
+          <button class="poi" data-poi="lake"       style="left:63.5%;top:45.5%"><i></i></button>
+          <button class="poi" data-poi="fields"     style="left:53.0%;top:53.5%"><i></i></button>
+          <button class="poi" data-poi="resistance" style="left:54.0%;top:62.0%"><i></i></button>
+          <button class="poi" data-poi="frosted"    style="left:30.0%;top:62.5%"><i></i></button>
+          <button class="poi" data-poi="meadows"    style="left:62.0%;top:78.5%"><i></i></button>
+        </div>
+        <div class="mapctl">
+          <button id="mZoomIn"  aria-label="Zoom in">+</button>
+          <button id="mZoomOut" aria-label="Zoom out">&minus;</button>
+          <button id="mReset"   aria-label="Reset view">Reset</button>
+        </div>
       </div>
-      <div class="mapctl">
-        <button id="mZoomIn"  aria-label="Zoom in">+</button>
-        <button id="mZoomOut" aria-label="Zoom out">&minus;</button>
-        <button id="mReset"   aria-label="Reset view">Reset</button>
+
+      <aside class="mapinfo" id="mapInfo">
+        <div class="mapinfo-empty" id="mapEmpty">
+          <h3>Lyssara</h3>
+          <p>Eight locations across the island. Pick one on the map to learn its story.</p>
+        </div>
+        <div class="mapinfo-body" id="mapBody" hidden>
+          <div class="sec-tag" id="mapKind">Location</div>
+          <h3 id="mapName"></h3>
+          <p id="mapDesc"></p>
+        </div>
+      </aside>
+    </div>
+
+    <div class="islandcol" id="updates">
+      <div class="colhead">Patch Notes</div>
+      <p class="colsub">Everything that has changed on the island, newest patch first.</p>
+      <div class="updates">
+
+        <details class="patch s2">
+          <summary>
+            <div class="patch-head">
+              <div class="ver">v2<s>.0</s></div>
+              <div class="patch-id">
+                <div class="patch-meta"><span class="badge">Major Update</span><span class="date">Season 2 Launch</span><span class="when"><time datetime="2026-08-31">August 31, 2026</time></span></div>
+                <div class="patch-name">Patch Notes</div>
+              </div>
+              <div class="chev">&#9660;</div>
+            </div>
+          </summary>
+          <div class="patch-banner"><img src="img/play-bg.jpg" alt="" loading="lazy"></div>
+          <div class="patch-body">
+
+            <div class="pn">
+              <h4>What Is New</h4>
+              <div class="entry">
+                <h5>Season 2 is live</h5>
+                <p>The VOA have taken Lyssara. Jules and her resistance are fighting to take it back, and the island has changed with them.</p>
+              </div>
+              <div class="entry">
+                <h5>A bigger island</h5>
+                <p>The map now runs 2.8&nbsp;km across, with new named locations and new routes between them.</p>
+              </div>
+            </div>
+
+            <div class="pn">
+              <h4>Map</h4>
+              <div class="entry">
+                <h5>Frosted Front is now on the map</h5>
+                <p>A flash frozen wasteland left behind by the VOA's Biome Controller explosion. The resistance holds it now.</p>
+              </div>
+              <div class="entry">
+                <h5>The Resistance</h5>
+                <p>Jules' base of operations and her growing team, built to hit the VOA directly and liberate the island.</p>
+              </div>
+              <div class="entry">
+                <h5>Homestead has been rebuilt</h5>
+                <p>Once the comforting home of many Lyssara residents, it is now an industrial jungle running under VOA control.</p>
+              </div>
+              <div class="entry">
+                <h5>Mended Meadows is out of VOA hands</h5>
+                <p>The island's oldest landmark was recently liberated and is now undergoing repairs.</p>
+              </div>
+            </div>
+
+            <div class="pn">
+              <h4>Gameplay</h4>
+              <div class="entry">
+                <h5>Vehicles across the island</h5>
+                <p>Trucks and sedans now spawn along the roads, so a long rotation across the map is no longer a walk.</p>
+              </div>
+              <div class="entry">
+                <h5>Stamina</h5>
+                <p>Sprinting now draws from a stamina meter, so chasing a fight across open ground costs you something.</p>
+              </div>
+              <div class="entry">
+                <h5>Exploration Mode</h5>
+                <p>Take the island at your own pace and see what Season 2 changed without a match running around you.</p>
+              </div>
+            </div>
+
+            <div class="pn">
+              <h4>UI</h4>
+              <div class="entry">
+                <h5>Custom HUD</h5>
+                <p>Health, shield and stamina now read on a bar layout built for Odyssey instead of the default one.</p>
+              </div>
+            </div>
+
+            <div class="pn">
+              <h4>Performance</h4>
+              <div class="entry">
+                <h5>World streaming</h5>
+                <p>Ongoing work on how the island loads in and what it keeps in memory, aimed at fewer hitches when you cross between regions.</p>
+              </div>
+            </div>
+
+            <div class="pn">
+              <h4>Bug Fixes</h4>
+              <ul class="fixlist">
+                <li><b>Fixed</b> an issue where an item granter handed out one copy of its item per player in the match instead of a single item.</li>
+                <li><b>Fixed</b> the HUD bars reading fuller than your real health and shield when the values were low.</li>
+              </ul>
+            </div>
+
+            <div class="pn-note">
+              <b>Known issue:</b> footstep audio can go silent for the rest of a match. This is a Fortnite engine bug rather than something in the island, so it cannot be patched from my side. The workaround and the full list live on the <a href="bugs.html">known issues page</a>.
+            </div>
+
+          </div>
+        </details>
+
+        <details class="patch">
+          <summary>
+            <div class="patch-head">
+              <div class="ver">v1<s>.0</s></div>
+              <div class="patch-id">
+                <div class="patch-meta"><span class="badge">Launch</span><span class="date">Season 1</span></div>
+                <div class="patch-name">Patch Notes</div>
+              </div>
+              <div class="chev">&#9660;</div>
+            </div>
+          </summary>
+          <div class="patch-body">
+
+            <div class="pn">
+              <h4>What Is New</h4>
+              <div class="entry">
+                <h5>The island opens</h5>
+                <p>Up to 50 players drop onto a fully hand built island and fight until one squad is left standing.</p>
+              </div>
+            </div>
+
+            <div class="pn">
+              <h4>Gameplay</h4>
+              <div class="entry">
+                <h5>Custom loot pool</h5>
+                <p>A loot pool picked for Odyssey rather than the default one, tuned around the island's own fights.</p>
+              </div>
+              <div class="entry">
+                <h5>Progression</h5>
+                <p>Custom progression built on top of the standard battle royale loop.</p>
+              </div>
+            </div>
+
+          </div>
+        </details>
+
       </div>
     </div>
 
-    <aside class="mapinfo" id="mapInfo">
-      <div class="mapinfo-empty" id="mapEmpty">
-        <h3>Lyssara</h3>
-        <p>Seven locations across the island. Pick one on the map to learn its story.</p>
-      </div>
-      <div class="mapinfo-body" id="mapBody" hidden>
-        <div class="sec-tag" id="mapKind">Location</div>
-        <h3 id="mapName"></h3>
-        <p id="mapDesc"></p>
-      </div>
-    </aside>
   </div>
 </div></section>
 
@@ -613,6 +636,16 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
 </script>
 
 
+<section id="play"><div class="wrap" style="text-align:center">
+  <div class="sec-tag">Drop In</div>
+  <h2 style="margin-bottom:14px">Play Odyssey</h2>
+  <p class="sec-sub" style="margin:0 auto 30px">Enter the island code in Fortnite to jump in.</p>
+  <div class="cta" style="justify-content:center">
+    <span class="code">1833-8923-5814</span>
+    <a class="btn btn-p" href="https://www.fortnite.com/creative/island-codes/1833-8923-5814" target="_blank" rel="noopener">Open in Fortnite</a>
+  </div>
+</div></section>
+
 <section id="about-me"><div class="wrap">
   <div class="sec-head">
     <div class="sec-tag">The Creator</div>
@@ -684,15 +717,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
         Thanks for reaching out. I read everything that comes through here and will get back to you.
       </div>
     </div>
-  </div>
-</div></section>
-<section id="play"><div class="wrap" style="text-align:center">
-  <div class="sec-tag">Drop In</div>
-  <h2 style="margin-bottom:14px">Play Odyssey</h2>
-  <p class="sec-sub" style="margin:0 auto 30px">Enter the island code in Fortnite to jump in.</p>
-  <div class="cta" style="justify-content:center">
-    <span class="code">1833-8923-5814</span>
-    <a class="btn btn-p" href="https://www.fortnite.com/creative/island-codes/1833-8923-5814" target="_blank" rel="noopener">Open in Fortnite</a>
   </div>
 </div></section>
 

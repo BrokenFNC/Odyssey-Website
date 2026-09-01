@@ -37,6 +37,7 @@
   --body:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none !important} /* author display rules beat the UA hidden rule, so .sent would show unconditionally */
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.6;-webkit-font-smoothing:antialiased}
 img,video{max-width:100%;display:block}
