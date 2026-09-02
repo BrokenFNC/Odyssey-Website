@@ -164,6 +164,7 @@ footer .disclaimer{font-size:12px;color:var(--mute);max-width:62ch;margin-top:8p
     <div class="sec-tag">Known Issues</div>
     <h2>What I am aware of</h2>
     <p class="sec-sub">Updated by hand. If a bug is listed here I already know about it, so there is no need to report it again.</p>
+    <p class="sec-sub">Anything marked <b>Fixing</b> is already sorted and lands in the next update.</p>
   </div>
 
   <div class="filters" id="filters"></div>
@@ -281,12 +282,32 @@ footer .disclaimer{font-size:12px;color:var(--mute);max-width:62ch;margin-top:8p
    ========================================================================== */
 const ISSUES = [
   {
-    title: "Footsteps go silent for some players",
-    status: "aware",
-    area: "Audio",
-    detail: "Enemy and own footstep audio stops entirely for the rest of the match. This is a Fortnite engine bug rather than something in the island, so it affects other creative maps too and cannot be patched from my side.",
-    workaround: "Change your skin at the phonebooth on the spawn island. Audio comes back straight away. There is only the one phonebooth, so do this before you drop.",
-    updated: "Aug 2026"
+    title: "Chests missing from some buildings in Mended Meadows",
+    status: "fixing",
+    area: "Mended Meadows",
+    detail: "A number of buildings have no chest in them at all, so landing there can leave you with nothing. This is the one on the list that actually affects how a match plays, so it is first in line.",
+    updated: "Sep 2026"
+  },
+  {
+    title: "Mismatched brick colour on a wall in Frosted Front",
+    status: "fixing",
+    area: "Frosted Front",
+    detail: "One wall of a building is using the wrong coloured bricks, so it does not match the rest of the building it belongs to. Cosmetic only. Nothing about it blocks movement or shots.",
+    updated: "Sep 2026"
+  },
+  {
+    title: "Missing wall on a house in Sunny Suburbs",
+    status: "fixing",
+    area: "Sunny Suburbs",
+    detail: "One of the houses is missing a wall, so you can see straight into the room and shoot through the gap.",
+    updated: "Sep 2026"
+  },
+  {
+    title: "Saturation and depth of field being retuned",
+    status: "fixing",
+    area: "Visuals",
+    detail: "The island is running more saturated than intended and the depth of field is stronger than it should be. Both are being adjusted together, so the whole map will look a little cleaner at distance.",
+    updated: "Sep 2026"
   }
 ];
 </script>
