@@ -113,6 +113,9 @@ h2{font-family:var(--display);font-size:clamp(32px,5vw,46px);font-weight:900;let
 .patch[open]{border-color:rgba(var(--accRGB),.34)}
 /* Season 2 runs on the blue season colour, the same one .stag.s2 already uses on the trailers */
 .patch.s2{--acc:#3ea0ff;--acc2:#2b6fff;--glow:rgba(62,160,255,.16);--accRGB:62,160,255}
+/* the Season 2 launch card carries island key art as a faint wash behind the panel colour */
+.patch.vista{background-image:linear-gradient(180deg,rgba(18,20,26,.90),rgba(18,20,26,.96) 55%,rgba(18,20,26,.985)),url("img/s2-vista.jpg");
+  background-size:cover;background-position:center 42%;background-repeat:no-repeat}
 .patch>summary{list-style:none;cursor:pointer}
 .patch>summary::-webkit-details-marker{display:none}
 .patch>summary:focus-visible{outline:none;box-shadow:inset 0 0 0 2px var(--acc)}
@@ -454,7 +457,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
           </div>
         </details>
 
-        <details class="patch s2">
+        <details class="patch s2 vista">
           <summary>
             <div class="patch-head">
               <div class="ver">v2<s>.0</s></div>
