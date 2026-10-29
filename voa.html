@@ -330,16 +330,115 @@ body.dying .mark{
   .vos-tip{display:none}
   .vos-tray .vos-host{display:none}
 }
+
+/* ==========================================================================
+   HQ UNDER ATTACK
+   VOA headquarters is being hit while this terminal is in use, so the whole
+   machine is unstable. A constant layer of damage (a rolling bar, brownout
+   flicker, the header alarm) plus bursts fired from the Attack script: torn
+   bands, lines knocked sideways, characters corrupting and snapping back, and
+   the picture jumping on every impact.
+   Movement here uses the separate translate property, never transform, so it
+   cannot fight the transform based die and judder animations above.
+   ========================================================================== */
+.roll{position:fixed;left:0;right:0;top:0;height:22vh;z-index:66;pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(255,255,255,.035) 40%,rgba(255,255,255,.085) 50%,rgba(255,255,255,.02) 56%,transparent);
+  animation:roll 5.8s linear infinite}
+@keyframes roll{from{translate:0 -24vh}to{translate:0 112vh}}
+
+/* brownouts: the power sags for a frame or two at uneven intervals */
+.flick{position:fixed;inset:0;z-index:66;pointer-events:none;background:#000;opacity:0;
+  animation:flick 4.7s steps(1) infinite}
+@keyframes flick{
+  0%  {opacity:0}
+  37% {opacity:.28} 38%{opacity:0}
+  39% {opacity:.14} 40%{opacity:0}
+  71% {opacity:.4}  72%{opacity:0}
+  91% {opacity:.18} 92.5%{opacity:.34} 93%{opacity:0}
+}
+
+/* torn bands, made per burst. Inverted ones flip whatever is under them;
+   the others smear it bright. */
+#tears{position:fixed;inset:0;z-index:67;pointer-events:none;overflow:hidden}
+.tear{position:absolute;left:-40px;right:-40px;
+  backdrop-filter:brightness(2.2) contrast(2.4) blur(.6px);
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.08) 0 3px,transparent 3px 7px)}
+.tear.inv{backdrop-filter:invert(1);background:none}
+
+/* a line knocked out of place, splitting into fringes as it goes */
+.l.rgb{text-shadow:-3px 0 rgba(255,40,80,.85),3px 0 rgba(40,220,255,.85)}
+
+/* whole picture hit for a frame */
+body.gl:not(.crashing):not(.dying) .screen{translate:var(--gx,8px) 0;filter:contrast(1.6) brightness(1.3)}
+body.gl:not(.crashing):not(.dying) .mark{opacity:.18}
+body.gl:not(.crashing):not(.dying) #vos{translate:var(--gx,8px) 0;filter:contrast(1.4) brightness(1.2)}
+
+/* an impact somewhere in the building: the picture jumps and flares */
+body.quake:not(.crashing):not(.dying) .screen,
+body.quake:not(.crashing):not(.dying) #vos{animation:quake .55s cubic-bezier(.2,.7,.3,1)}
+@keyframes quake{
+  0%  {translate:0 0;filter:none}
+  8%  {translate:-10px 6px;filter:brightness(2.2) contrast(1.6)}
+  18% {translate:9px -7px;filter:brightness(1.5)}
+  32% {translate:-6px 4px;filter:none}
+  48% {translate:5px -3px}
+  66% {translate:-2px 1px}
+  100%{translate:0 0}
+}
+
+/* Emergency lighting. Red washes in from the corners and the edges on a 2s
+   cycle, matching the siren's wail, with a beacon beam turning over the top.
+   Screen blended, so black goes red but white text stays white and readable.
+   Switched off for the die and crash animations so those still read cleanly. */
+.redlight{position:fixed;inset:0;z-index:65;pointer-events:none;overflow:hidden;mix-blend-mode:screen;
+  background:
+    radial-gradient(55% 45% at 0% 0%,rgba(255,24,24,.6),transparent 70%),
+    radial-gradient(55% 45% at 100% 0%,rgba(255,24,24,.6),transparent 70%),
+    radial-gradient(ellipse at 50% 50%,transparent 42%,rgba(210,0,0,.5));
+  animation:redlight 2s ease-in-out infinite}
+@keyframes redlight{0%,100%{opacity:.06}50%{opacity:.95}}
+.redlight::before{content:"";position:absolute;left:50%;top:50%;width:250vmax;height:250vmax;
+  translate:-50% -50%;
+  background:conic-gradient(from 0deg,rgba(255,30,30,.2) 0 16deg,transparent 30deg 180deg,
+                            rgba(255,30,30,.2) 180deg 196deg,transparent 210deg 360deg);
+  animation:beacon 2s linear infinite}
+@keyframes beacon{to{rotate:360deg}}
+body.dying .redlight,body.crashing .redlight{display:none}
+
+/* the header alarm */
+.hq{color:#ff3b3b;text-shadow:0 0 10px rgba(255,40,40,.7);animation:b 1.05s step-end infinite}
+.vos-alert{color:#ff6b6b;animation:b 1.05s step-end infinite}
+
+/* priority broadcasts break into the log as solid inverted plates */
+.l.alert{display:inline-block;background:var(--fg);color:var(--bg);padding:0 8px;margin:2px 0 4px;
+  letter-spacing:.08em;animation:b 1.05s step-end 3}
+
+@media(max-width:640px){
+  .hq{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .roll,.flick{animation:none;display:none}
+  .redlight{animation:none;opacity:.35}
+  .redlight::before{display:none}
+  .hq,.vos-alert,.l.alert{animation:none}
+}
 </style>
 </head>
 <body class="crt">
 
 <img class="mark" src="img/voa-logo.png" alt="" aria-hidden="true">
 
+<!-- HQ under attack: damage layers over everything, the desktop included -->
+<div class="redlight" aria-hidden="true"></div>
+<div class="roll" aria-hidden="true"></div>
+<div class="flick" aria-hidden="true"></div>
+<div id="tears" aria-hidden="true"></div>
+
 <main class="screen">
   <div class="bar">
     <span class="brand"><img src="img/voa-logo.png" alt=""><span id="brandText">VOA // SECURE TERMINAL</span></span>
     <span class="right">
+      <span class="hq" id="hq">[ HQ UNDER ATTACK ]</span>
       <button id="snd" type="button" aria-pressed="true">[ SOUND ON ]</button>
       <a href="index.html">[ DISCONNECT ]</a>
     </span>
@@ -477,6 +576,7 @@ body.dying .mark{
     <div class="vos-start"><img src="img/voa-logo.png" alt=""><span>VOA OS</span></div>
     <div class="vos-tasks" id="vosTasks"></div>
     <div class="vos-tray">
+      <span class="vos-alert">EVACUATION ORDER . LEAVE THE BUILDING</span>
       <span class="vos-host">OPERATOR . TIER 2</span>
       <span id="vosClock"><b>--:--</b></span>
     </div>
@@ -600,6 +700,16 @@ const BOOT = [
   ["dim",  "ESTABLISHING UPLINK ..."],
   ["dim",  "HANDSHAKE OK"],
   ["gap",  ""],
+  ["sys",  "WARNING . HQ UPLINK DEGRADED"],
+  ["dim",  "PACKET LOSS   64 PERCENT"],
+  ["dim",  "HQ STATUS     UNDER ATTACK . EVACUATING"],
+  ["dim",  "FALLING BACK TO LOCAL CACHE ..."],
+  ["gap",  ""],
+  ["sys",  "WARNING . TERMINAL 07 HARDWARE FAULT"],
+  ["dim",  "DISPLAY PANEL   CRACKED . INTEGRITY 38 PERCENT"],
+  ["dim",  "PIXEL ARRAY     COLUMNS 0412 1077 1514 STUCK"],
+  ["dim",  "BACKLIGHT       INTERMITTENT"],
+  ["gap",  ""],
   ["dim",  "OPERATOR    NELL, CYPRUS"],
   ["dim",  "RANK        COMMANDER . THIRD GRADE"],
   ["dim",  "CLEARANCE   TIER 2 . LIMITED"],
@@ -608,6 +718,7 @@ const BOOT = [
   ["sys",  "CONNECTED TO THE VOA TERMINAL."],
   ["sys",  "NOW ACCEPTING INPUT CODES."],
   ["dim",  "MOST ARCHIVE TIERS ARE ABOVE THIS TERMINAL."],
+  ["sys",  "EVACUATION ORDER IN EFFECT. ABANDON THIS TERMINAL."],
   ["gap",  ""]
 ];
 
@@ -683,6 +794,40 @@ const Sound = (function(){
     g.gain.setTargetAtTime(0.06, t, 1.4);         // fade up over a couple of seconds
     humGain = g; humOsc = o1;
     hum = true;
+    startSiren();
+  }
+
+  /* HQ is under attack, so the building alarm never stops: an air raid wail, a
+     sawtooth swept up and down by a slow triangle, band limited so it sounds
+     like it is coming through the walls rather than from the speaker. The wail
+     takes 2s, the same as the red light cycle in the CSS. It deliberately
+     survives powerDown(): leaving the terminal for the desktop does not end the
+     attack. */
+  let siren = null;
+  function startSiren(){
+    if (!ctx || siren) return;
+    const t = ctx.currentTime;
+    const o = ctx.createOscillator();
+    o.type = "sawtooth";
+    o.frequency.value = 640;
+    const lfo = ctx.createOscillator();
+    lfo.type = "triangle";
+    lfo.frequency.value = 0.5;
+    const depth = ctx.createGain();
+    depth.gain.value = 230;                       // sweeps roughly 410 to 870Hz
+    lfo.connect(depth); depth.connect(o.frequency);
+
+    const bp = ctx.createBiquadFilter();
+    bp.type = "bandpass"; bp.frequency.value = 900; bp.Q.value = 0.7;
+    const lp = ctx.createBiquadFilter();
+    lp.type = "lowpass"; lp.frequency.value = 1700;
+    const g = ctx.createGain();
+    g.gain.value = 0;
+    g.gain.setTargetAtTime(0.024, t, 1.2);        // fades in with the hum
+
+    o.connect(bp); bp.connect(lp); lp.connect(g); g.connect(master);
+    o.start(); lfo.start();
+    siren = g;
   }
 
   function key(vol){
@@ -920,7 +1065,44 @@ const Sound = (function(){
     return 420;                                   // ms for the caller to wait
   }
 
-  return { wake, toggle, key, error, hit, alarm, startup, glitch, crash,
+  /* A hit somewhere in HQ, heard down the line: a low falling thump with a
+     filtered rumble behind it, and the hum sagging as the power dips. Distant,
+     not close, so it sits under the other cues rather than over them. */
+  function boom(){
+    if (!ctx || !on) return;
+    const t = ctx.currentTime;
+
+    const o = ctx.createOscillator();
+    o.type = "sine";
+    o.frequency.setValueAtTime(74, t);
+    o.frequency.exponentialRampToValueAtTime(24, t + 0.9);
+    const og = ctx.createGain();
+    og.gain.setValueAtTime(0, t);
+    og.gain.linearRampToValueAtTime(0.2, t + 0.02);
+    og.gain.exponentialRampToValueAtTime(0.0001, t + 1.1);
+    o.connect(og); og.connect(master);
+    o.start(t); o.stop(t + 1.15);
+
+    const s = ctx.createBufferSource();
+    s.buffer = noise(); s.loop = true;
+    const lp = ctx.createBiquadFilter();
+    lp.type = "lowpass";
+    lp.frequency.setValueAtTime(700, t);
+    lp.frequency.exponentialRampToValueAtTime(80, t + 0.9);
+    const sg = ctx.createGain();
+    sg.gain.setValueAtTime(0, t);
+    sg.gain.linearRampToValueAtTime(0.16, t + 0.03);
+    sg.gain.exponentialRampToValueAtTime(0.0001, t + 1.0);
+    s.connect(lp); lp.connect(sg); sg.connect(master);
+    s.start(t); s.stop(t + 1.05);
+
+    if (humGain){                                 // brownout
+      humGain.gain.setTargetAtTime(0.012, t, 0.03);
+      humGain.gain.setTargetAtTime(0.06, t + 0.4, 0.25);
+    }
+  }
+
+  return { wake, toggle, key, error, hit, alarm, startup, glitch, crash, boom,
            duck, powerDown, running, isOn: () => on };
 })();
 
@@ -954,7 +1136,9 @@ function type(cls, rawText, speed){
         return resolve();
       }
       caret.remove();
-      d.textContent = text.slice(0, ++i);
+      // the line is unstable: now and then a garbage character lands before the
+      // right one, and the next step overwrites it
+      d.textContent = text.slice(0, ++i) + (Math.random() < 0.09 ? junkLine(1) : "");
       d.appendChild(caret);
       out.scrollTop = out.scrollHeight;
       if (i % 2 === 0) Sound.key(0.018);   // quiet chatter while it prints
@@ -2300,7 +2484,230 @@ if (vosRestore){
 } else {
   pw.focus();
 }
+
+
+/* ============================================================================
+   HQ UNDER ATTACK
+   ----------------------------------------------------------------------------
+   VOA headquarters is being hit while this terminal is in use. Three layers:
+
+     bursts      torn bands, lines knocked sideways, characters corrupting and
+                 snapping back, the header losing its own name. Constant.
+     impacts     a hit somewhere in the building: thump, brownout, the picture
+                 jumps. Every so often.
+     bulletins   priority broadcasts from HQ breaking into the log. They run
+                 in order so the attack visibly gets worse, then repeat the
+                 later ones. Only printed while the prompt is idle, so they
+                 never land in the middle of a record.
+
+   Everything stands down while the screen is crashing or dying, so the lockout
+   and the Odyssey crash still read cleanly. The attacker is never named: see
+   the note above BULLETINS for who it really is.
+   ========================================================================== */
+const Attack = (function(){
+  const calm  = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const layer = document.getElementById("tears");
+  const brand = document.getElementById("brandText");
+  const BRAND = brand.textContent;
+  const BRANDS = [
+    "VOA // S3CUR" + B + " T3RM1NAL",
+    "VOA // CONNECTION COMPROMISED",
+    "V" + B + "A // " + B + B + B + "URE TERMINAL",
+    "VOA // HQ NOT RESPONDING",
+    "VOA // " + B + B + B + B + B + B + B + B + B + B + B
+  ];
+  const GSUB = ["HQ link unstable", "Authorisation server unreachable", "Retrying ..."];
+
+  const rnd  = (a, b) => a + Math.random() * (b - a);
+  const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+  const busy = () => document.hidden ||
+    document.body.classList.contains("dying") || document.body.classList.contains("crashing");
+
+  function tear(){
+    const n = 1 + Math.floor(Math.random() * 4);
+    for (let i = 0; i < n; i++){
+      const t = document.createElement("div");
+      t.className = "tear" + (Math.random() < 0.45 ? " inv" : "");
+      t.style.top = rnd(0, 100).toFixed(1) + "vh";
+      t.style.height = Math.round(rnd(2, 42)) + "px";
+      layer.appendChild(t);
+      setTimeout(() => t.remove(), rnd(50, 240));
+    }
+  }
+
+  // recent log lines only, and never one still being typed (it carries the caret)
+  function liveLines(){
+    return Array.from(out.querySelectorAll(".l")).slice(-40)
+      .filter(n => !n.children.length && n.textContent.length > 3 && !n.dataset.hurt);
+  }
+
+  function shove(){
+    const ls = liveLines();
+    const k = 1 + Math.floor(Math.random() * 3);
+    for (let i = 0; i < k && ls.length; i++){
+      const n = ls.splice(Math.floor(Math.random() * ls.length), 1)[0];
+      n.dataset.hurt = "1";
+      n.style.translate = Math.round(rnd(-38, 38)) + "px 0";
+      n.classList.add("rgb");
+      setTimeout(() => { n.style.translate = ""; n.classList.remove("rgb"); delete n.dataset.hurt; },
+                 rnd(70, 230));
+    }
+  }
+
+  function corrupt(){
+    const n = pick(liveLines());
+    if (!n) return;
+    const orig = n.textContent;
+    const chars = orig.split("");
+    const hits = 1 + Math.floor(rnd(1, orig.length / 5));
+    for (let i = 0; i < hits; i++){
+      const j = Math.floor(Math.random() * chars.length);
+      if (chars[j] !== " ") chars[j] = junkLine(1);
+    }
+    n.dataset.hurt = "1";
+    n.textContent = chars.join("");
+    setTimeout(() => {
+      if (n.dataset.hurt) n.textContent = orig;
+      delete n.dataset.hurt;
+    }, rnd(90, 280));
+  }
+
+  function brandGlitch(){
+    brand.textContent = pick(BRANDS);
+    setTimeout(() => { brand.textContent = BRAND; }, rnd(90, 300));
+  }
+
+  function gateGlitch(){
+    const sub = document.querySelector(".gsub");
+    if (!sub || !document.body.contains(sub)) return;
+    const was = sub.textContent;
+    sub.textContent = pick(GSUB);
+    setTimeout(() => { sub.textContent = was; }, rnd(500, 1100));
+  }
+
+  // a line of pure noise that appears in the log and is gone a moment later
+  function ghostLine(){
+    if (out.hidden) return;
+    const d = document.createElement("div");
+    d.className = "l junk";
+    d.textContent = junkLine(20 + Math.floor(Math.random() * 50));
+    out.appendChild(d);
+    out.scrollTop = out.scrollHeight;
+    setTimeout(() => d.remove(), rnd(90, 300));
+  }
+
+  function burst(big){
+    if (busy()) return;
+    if (Math.random() < 0.6) corrupt();
+    if (Math.random() < 0.2) brandGlitch();
+    if (calm) return;
+    tear();
+    if (Math.random() < 0.7) shove();
+    if (Math.random() < 0.08) gateGlitch();
+    if (big){
+      document.body.style.setProperty("--gx", Math.round(rnd(-14, 14)) + "px");
+      document.body.classList.add("gl");
+      setTimeout(() => document.body.classList.remove("gl"), rnd(80, 240));
+      if (Math.random() < 0.3) Sound.glitch();
+      if (Math.random() < 0.35) ghostLine();
+    }
+  }
+
+  function burstLoop(){
+    burst(Math.random() < 0.28);
+    // bursts cluster: sometimes a quick chain, otherwise a pause
+    const next = Math.random() < 0.32 ? rnd(40, 150) : rnd(600, 3000);
+    setTimeout(burstLoop, calm ? next * 3 : next);
+  }
+
+  function impact(){
+    if (busy()) return;
+    Sound.boom();
+    if (window.Desk) Desk.spark();               // the hit jolts the cracked panel
+    if (calm) return;
+    document.body.classList.remove("quake");
+    void document.body.offsetWidth;                // restart the animation
+    document.body.classList.add("quake");
+    setTimeout(() => document.body.classList.remove("quake"), 600);
+    setTimeout(() => burst(true), 40);
+    setTimeout(() => burst(true), 180);
+  }
+
+  function impactLoop(){
+    impact();
+    setTimeout(impactLoop, rnd(14000, 30000));
+  }
+
+  /* Run in order, so the situation worsens the longer you stay, then the later
+     ones repeat at random. Each is a list of [class, text].
+
+     Canon behind these, never printed: the attacker is the PUMPKIN KING. Vines
+     come up out of the ground and drag VOA vehicles under. The VOA has no idea
+     what it is fighting, so every bulletin describes only the symptoms (vines
+     from the ground, vehicles pulled under) and files the force as UNIDENTIFIED.
+     It is NOT Jules or the Resistance. HQ's layout is not established lore, so
+     nothing here names wings, exits, floors or rooms. */
+  const BULLETINS = [
+    [["alert", "EVACUATION ORDER . VOA HQ"],
+     ["sys",   "VOA HQ IS UNDER ATTACK."],
+     ["dim",   "FORCE UNIDENTIFIED. NO SIGNATURE ON FILE."],
+     ["sys",   "ALL OPERATORS ABANDON YOUR TERMINALS AND EVACUATE THE BUILDING."]],
+    [["alert", "EVACUATION ORDER . VOA HQ"],
+     ["sys",   "LEAVE YOUR STATION NOW. DO NOT LOG OUT. DO NOT COLLECT BELONGINGS."],
+     ["dim",   "SESSIONS LEFT OPEN WILL BE CLOSED REMOTELY."]],
+    [["alert", "EVACUATION ORDER . VOA HQ"],
+     ["sys",   "VINES REPORTED COMING UP OUT OF THE GROUND."],
+     ["dim",   "ORGANIC . ORIGIN UNKNOWN"]],
+    [["alert", "EVACUATION ORDER . VOA HQ"],
+     ["sys",   "VEHICLES ARE BEING SEIZED AND PULLED UNDER."],
+     ["dim",   "EVACUATE ON FOOT. DO NOT BOARD ANY VEHICLE."]],
+    [["alert", "EVACUATION ORDER . VOA HQ"],
+     ["sys",   "ATTACKER STILL NOT IDENTIFIED. NO DEMANDS RECEIVED."],
+     ["dim",   "CASUALTY REPORTING SUSPENDED UNTIL FURTHER NOTICE."]],
+    [["alert", "OPERATOR STILL CONNECTED"],
+     ["sys",   "THIS TERMINAL IS STILL IN USE. EVACUATION IS UNDER WAY."],
+     ["sys",   "WHY ARE YOU STILL HERE"]],
+    [["alert", "HQ LINK LOST"],
+     ["dim",   "RECONNECTING ... RECONNECTING ... RECONNECTING ..."],
+     ["sys",   "HQ LINK RESTORED . INTEGRITY UNKNOWN"]],
+    [["alert", "EVACUATION ORDER . VOA HQ"],
+     ["sys",   "THIS IS NOT A DRILL. EVACUATE THE BUILDING."],
+     ["sys",   "REPEAT. THIS IS NOT A DRILL."]]
+  ];
+  let bi = 0;
+
+  function bulletin(){
+    if (busy() || !sessionLive || out.hidden || row.hidden || cmd.disabled || vosScreen.hidden) return false;
+    const b = bi < BULLETINS.length ? BULLETINS[bi++] : pick(BULLETINS.slice(2));
+    impact();
+    Sound.alarm();
+    line("gap", "");
+    b.forEach(([cls, text]) => line(cls, text));
+    line("gap", "");
+    return true;
+  }
+
+  function bulletinLoop(){
+    const ok = bulletin();
+    // the prompt was busy or not open yet, so try again soon rather than waiting a full cycle
+    setTimeout(bulletinLoop, ok ? rnd(24000, 40000) : 4000);
+  }
+
+  function start(){
+    setTimeout(burstLoop, 500);
+    setTimeout(impactLoop, rnd(5000, 9000));
+    setTimeout(bulletinLoop, 9000);
+  }
+
+  return { start };
+})();
+
+Attack.start();
 </script>
+
+<!-- the physical machine: cracked glass, panel bleed, dead pixels, sparks.
+     Shared with any page the desktop opens, so the damage is the same there. -->
+<script src="desk.js"></script>
 
 </body>
 </html>

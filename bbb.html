@@ -142,6 +142,85 @@ dl.hours dt{font-weight:700}
   .nav a{display:inline-block;margin:3px 5px}
 }
 </style>
+
+<style id="halloween-css">
+/* ===========================================================================
+   HALLOWEEN
+   The October dress up, done the way the site would have done it: clip art
+   pumpkins and bats that "animate" like little GIFs, cobwebs pinned into the
+   corners of every box, and the marquee bulbs swapped for orange and purple.
+   Everything seasonal is in this block, the #halloween box, and the clip art
+   script, so it comes down again without touching the rest of the page.
+   ========================================================================= */
+:root{--pumpkin:#ff7a1a;--witch:#7b2fd0;--night:#1a0b2e}
+body{background:
+  linear-gradient(rgba(40,8,70,.55),rgba(26,11,46,.35) 40%,rgba(255,110,20,.18)),
+  var(--blue) url("img/bbb-bg.jpg") center top / cover fixed no-repeat;
+  background-attachment:fixed}
+
+/* chasing orange and purple bulbs, like the sign has been rewired for the month */
+.bulbs{background-image:
+    radial-gradient(circle,var(--pumpkin) 0 3px,rgba(0,0,0,.3) 3.4px,transparent 4px),
+    radial-gradient(circle,#b77bff 0 3px,rgba(0,0,0,.3) 3.4px,transparent 4px);
+  background-size:24px 16px,24px 16px;background-position:0 50%,12px 50%;
+  animation:chase .9s steps(2) infinite}
+@keyframes chase{to{background-position:24px 50%,36px 50%}}
+.banner{border-color:var(--pumpkin)}
+
+.blink{color:var(--pumpkin);text-shadow:2px 2px 0 var(--night),-1px -1px 0 #000}
+.crawl{background:var(--night);border-color:#b77bff;color:#ffb35c}
+.nav,.box,.foot{border-color:var(--pumpkin)}
+
+/* the NEW! sticker on the Halloween link */
+.new{display:inline-block;font-size:10px;font-weight:700;color:#fff;background:var(--red);
+  padding:0 4px;margin-left:3px;border:1px solid #7a120c;transform:rotate(-8deg);
+  vertical-align:2px;animation:blink 1.05s steps(1,end) infinite}
+
+/* a cobweb pinned into the top corners of every box */
+.box,.foot{position:relative}
+.box::before,.box::after,.foot::before{content:"";position:absolute;top:0;width:64px;height:64px;
+  pointer-events:none;background:var(--web) 0 0/100% 100% no-repeat}
+.box::before,.foot::before{left:0}
+.box::after{right:0;transform:scaleX(-1)}
+
+/* clip art. The bat flaps in two frames and the pumpkin turns, both deliberately
+   stepped so they read as old GIFs rather than smooth CSS. */
+.clip{display:inline-block;vertical-align:middle;line-height:0}
+.clip svg{display:block;width:100%;height:auto}
+.spin{width:34px;animation:turn 1.6s steps(8) infinite}
+@keyframes turn{to{transform:rotateY(360deg)}}
+.bat{width:48px}
+.bat svg{animation:flap .36s steps(1) infinite}
+@keyframes flap{50%{transform:scaleY(.4)}}
+.box h2 .clip{margin:0 8px;vertical-align:-4px}
+
+/* bats loose on the banner */
+.bannerwrap{position:relative}
+.bannerwrap .bat{position:absolute;z-index:2;pointer-events:none}
+.bannerwrap .bat.a{top:-18px;left:-22px;width:84px}
+.bannerwrap .bat.b{top:20px;right:-20px;width:64px;transform:scaleX(-1)}
+.bannerwrap .bat.c{bottom:-14px;right:24%;width:50px}
+
+/* the Halloween box */
+#halloween{background:#fff1dd}
+#halloween h2{color:var(--pumpkin);text-shadow:1px 1px 0 #fff,2px 2px 0 var(--night)}
+.patch{display:flex;justify-content:center;gap:10px;margin:8px 0 14px}
+.patch .clip{width:28px}
+table.menu.spooky th{background:var(--night);color:#ffb35c;border-color:var(--night)}
+table.menu.spooky{border-color:var(--night)}
+ul.candy{list-style:none;margin:14px 0 0;font-size:14px}
+ul.candy li{position:relative;padding-left:24px;margin-bottom:7px}
+ul.candy li::before{content:"";position:absolute;left:2px;top:4px;width:13px;height:15px;
+  clip-path:polygon(50% 100%,0 0,100% 0);
+  background:linear-gradient(#fff6e0 0 30%,var(--pumpkin) 30% 66%,#ffd93b 66%)}
+
+.works{background:repeating-linear-gradient(45deg,var(--pumpkin) 0 12px,#140a20 12px 24px);border-color:#3a1a00}
+.counter b{color:var(--pumpkin)}
+
+@media(prefers-reduced-motion:reduce){
+  .bulbs,.spin,.bat svg,.new{animation:none}
+}
+</style>
 </head>
 <body>
 <div class="page">
@@ -151,16 +230,22 @@ dl.hours dt{font-weight:700}
     <span class="way-back" hidden></span>
   </div>
 
-  <div class="bulbs"></div>
-  <div class="banner"><img src="img/bbb-logo.jpg" alt="Beef Boss's Burgers. For the whole family."></div>
-  <div class="bulbs"></div>
+  <div class="bannerwrap">
+    <div class="bulbs"></div>
+    <div class="banner"><img src="img/bbb-logo.jpg" alt="Beef Boss's Burgers. For the whole family."></div>
+    <div class="bulbs"></div>
+    <span class="clip bat a" data-clip="bat"></span>
+    <span class="clip bat b" data-clip="bat"></span>
+    <span class="clip bat c" data-clip="bat"></span>
+  </div>
 
-  <div class="blinkline"><span class="blink">&#9733; NOW OPEN IN STONEWOOD &#9733;</span></div>
+  <div class="blinkline"><span class="blink">&#9733; HAPPY HALLOWEEN FROM BEEF BOSS'S &#9733;</span></div>
 
-  <div class="crawl"><span>WELCOME TO THE OFFICIAL BEEF BOSS'S BURGERS HOME PAGE &nbsp; &#9679; &nbsp; NOW OPEN IN STONEWOOD &nbsp; &#9679; &nbsp; FOUR LIVE SHOWS EVERY DAY &nbsp; &#9679; &nbsp; BOOK THE PARTY ROOM FOR YOUR BIRTHDAY &nbsp; &#9679; &nbsp; NIGHT SECURITY WANTED, APPLY WITHIN &nbsp; &#9679; &nbsp; THANK YOU FOR VISITING</span></div>
+  <div class="crawl"><span>HAPPY HALLOWEEN FROM EVERYONE AT BEEF BOSS'S BURGERS &nbsp; &#9679; &nbsp; COSTUME CONTEST EVERY SATURDAY IN OCTOBER &nbsp; &#9679; &nbsp; TRY THE NEW BOSS-O-LANTERN BURGER &nbsp; &#9679; &nbsp; FIND US AT THE STONEWOOD HALLOWEEN FESTIVAL &nbsp; &#9679; &nbsp; TRICK OR TREAT AT THE COUNTER ON HALLOWEEN NIGHT &nbsp; &#9679; &nbsp; NIGHT SECURITY WANTED, APPLY WITHIN &nbsp; &#9679; &nbsp; THANK YOU FOR VISITING</span></div>
 
   <div class="nav">
     <a href="#welcome">[ HOME ]</a>
+    <a href="#halloween">[ HALLOWEEN ]<span class="new">NEW!</span></a>
     <a href="#menu">[ MENU ]</a>
     <a href="#band">[ THE BAND ]</a>
     <a href="#visit">[ VISIT US ]</a>
@@ -173,6 +258,32 @@ dl.hours dt{font-weight:700}
     <p class="lead">Hi there, and thanks for stopping by our home page!</p>
     <p>We are the newest family restaurant in Stonewood and we are open for business at last. Every burger is cooked to order on our own grill, every shake is made in front of you, and every single day the band plays four full shows on our brand new stage.</p>
     <p>Bring the kids, bring the grandparents, bring the whole street. There is a table with your name on it and Beef Boss himself will come out to say hello.</p>
+  </div>
+
+  <div class="box" id="halloween">
+    <h2><span class="clip spin" data-clip="pumpkin"></span>Spooky Season at Beef Boss's!<span class="clip spin" data-clip="pumpkin"></span></h2>
+    <div class="patch">
+      <span class="clip" data-clip="pumpkin"></span><span class="clip" data-clip="pumpkin"></span><span class="clip" data-clip="pumpkin"></span><span class="clip" data-clip="pumpkin"></span><span class="clip" data-clip="pumpkin"></span>
+    </div>
+    <p class="lead">It is our very first Halloween and we have gone all out! All month long the whole restaurant is dressed up, and so is the band.</p>
+    <div class="rule"></div>
+    <table class="menu spooky">
+      <caption>Halloween specials, October only!</caption>
+      <tbody>
+        <tr><th colspan="2">LIMITED TIME</th></tr>
+        <tr><td><b>Boss-O-Lantern Burger</b><br>The Beef Boss on a black bun with orange cheese and a jack o' lantern face cut into the top.</td><td class="p">8.95</td></tr>
+        <tr><td><b>Monster Mash Fries</b><br>Loaded fries with green cheese sauce and googly eyes made of mozzarella.</td><td class="p">4.95</td></tr>
+        <tr><td><b>Graveyard Shake</b><br>Chocolate shake topped with cookie crumb dirt and a gummy worm crawling out.</td><td class="p">3.95</td></tr>
+        <tr><td><b>Witch's Brew</b><br>Bubbling purple soda. Free refills for anybody in costume.</td><td class="p">1.95</td></tr>
+      </tbody>
+    </table>
+    <ul class="candy">
+      <li><b>Costume Contest</b> every Saturday in October. Kids under 12. The winner gets their picture taken with the band!</li>
+      <li><b>Trick or Treat</b> at the counter on Halloween night. We are open until midnight and the candy bowl never runs out.</li>
+      <li><b>Stonewood Halloween Festival.</b> Come and find our stand! Free paper crowns and balloons for every little one.</li>
+      <li><b>Party rooms</b> are decorated for the month. Parents, please keep an eye on your little ones. The party rooms are very easy to get lost in!</li>
+    </ul>
+    <p class="small">Spooky but never scary! The Halloween show is suitable for the whole family.</p>
   </div>
 
   <div class="box" id="menu">
@@ -201,6 +312,7 @@ dl.hours dt{font-weight:700}
     <h2>Meet the Band</h2>
     <div class="rule"></div>
     <p class="lead">Four shows a day, every day, right through to close. They have been practising!</p>
+    <p class="lead"><span class="clip bat" data-clip="bat"></span> All through October the band are performing in costume. Can you guess who is who? <span class="clip bat" data-clip="bat"></span></p>
     <div class="rule"></div>
     <div class="band">
       <div class="act">
@@ -253,8 +365,10 @@ dl.hours dt{font-weight:700}
       <ul>
         <li>No experience required.</li>
         <li>Applications accepted immediately.</li>
-        <li>Training is one tape, played on your first shift.</li>
+        <li>Training is a pre-recorded phone call, left for you every night.</li>
         <li>The cameras are already installed, so there is no need to leave the office.</li>
+        <li>Halloween night is double pay.</li>
+        <li>Please do not let trick or treaters in after midnight.</li>
       </ul>
     </div>
   </div>
@@ -270,12 +384,13 @@ dl.hours dt{font-weight:700}
       <span class="badge">Made with Notepad</span>
       <span class="badge">This page is under construction</span>
       <span class="badge">Sound: ON is better</span>
+      <span class="badge">Happy Halloween!</span>
     </div>
     <img class="opmark" src="img/durrr-180.png" alt="Durrr-Time Entertainment" width="54" height="54">
     <div class="fine">
       Beef Boss's Burgers, Stonewood. Operated by Durrr-Time Entertainment.<br>
       All characters appearing on stage are the property of Durrr-Time Entertainment.<br>
-      This page last updated 14 August.
+      This page last updated 21 October.
     </div>
     <div class="way-back" style="margin-top:14px" hidden></div>
   </div>
@@ -284,6 +399,49 @@ dl.hours dt{font-weight:700}
 </div>
 
 <script>
+/* ---------------------------------------------------------------------------
+   HALLOWEEN CLIP ART
+   Fills every data-clip slot with its drawing and builds the cobweb that the
+   boxes pin into their corners. Drawn here as SVG so there are no extra image
+   files to host for one month of the year.
+   ------------------------------------------------------------------------- */
+(function(){
+  const ART = {
+    pumpkin:
+      '<svg viewBox="0 0 64 60" xmlns="http://www.w3.org/2000/svg">' +
+      '<path d="M30 12c0-5 2-9 7-10l2 3c-3 1-5 3-5 7z" fill="#3f8a1e"/>' +
+      '<ellipse cx="20" cy="36" rx="16" ry="20" fill="#e0580f" stroke="#7a2a00"/>' +
+      '<ellipse cx="44" cy="36" rx="16" ry="20" fill="#e0580f" stroke="#7a2a00"/>' +
+      '<ellipse cx="32" cy="36" rx="14" ry="22" fill="#ff8a1f" stroke="#7a2a00"/>' +
+      '<path d="M18 31l6-9 6 9zM34 31l6-9 6 9z" fill="#ffe94a" stroke="#241206"/>' +
+      '<path d="M15 41q17 14 34 0l-4 1-3 4-4-3-4 4-4-4-4 4-4-4-3 3z" fill="#ffe94a" stroke="#241206"/></svg>',
+    bat:
+      '<svg viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg"><path fill="#1b0d2b" stroke="#000" d="M50 16c-2-5-5-6-7-3-1-4-4-6-6-5 1 3 0 6-2 8-6-6-18-9-35-6 9 4 14 11 13 20 5-4 12-5 17-1 2-4 7-5 11-2 2-3 5-4 7-3l2 5 2-5c2-1 5 0 7 3 4-3 9-2 11 2 5-4 12-3 17 1-1-9 4-16 13-20-17-3-29 0-35 6-2-2-3-5-2-8-2-1-5 1-6 5-2-3-5-2-7 3z"/>' +
+      '<circle cx="47.5" cy="20" r="1.3" fill="#ffe94a"/><circle cx="52.5" cy="20" r="1.3" fill="#ffe94a"/></svg>'
+  };
+  document.querySelectorAll("[data-clip]").forEach(el => {
+    el.innerHTML = ART[el.dataset.clip] || "";
+    el.setAttribute("aria-hidden", "true");
+  });
+
+  /* corner web, anchored top left: spokes from the corner, sagging threads between */
+  const spokes = 6, rings = [18, 36, 54, 72, 90];
+  const ang = i => (i / (spokes - 1)) * Math.PI / 2;
+  const pt = (r, a) => (r * Math.cos(a)).toFixed(1) + " " + (r * Math.sin(a)).toFixed(1);
+  let d = "";
+  for (let i = 0; i < spokes; i++) d += "M0 0L" + pt(100, ang(i));
+  rings.forEach(r => {
+    for (let i = 0; i < spokes - 1; i++){
+      const a1 = ang(i), a2 = ang(i + 1);
+      d += "M" + pt(r, a1) + "Q" + pt(r * .82, (a1 + a2) / 2) + " " + pt(r, a2);
+    }
+  });
+  const web = '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="' + d +
+              '" fill="none" stroke="rgba(70,40,90,.5)" stroke-width="1"/></svg>';
+  document.documentElement.style.setProperty("--web",
+    'url("data:image/svg+xml,' + encodeURIComponent(web) + '")');
+})();
+
 /* ---------------------------------------------------------------------------
    This page has two lives. On its own it is simply the restaurant's home page,
    and nothing in this file names or links anywhere else, which is what makes
@@ -308,6 +466,15 @@ dl.hours dt{font-weight:700}
     slot.appendChild(a);
     slot.hidden = false;
   });
+
+  // Opened on somebody's machine rather than in a browser of your own, so it
+  // shows up with whatever is wrong with that machine. Loaded only here, so the
+  // standalone page stays exactly as it is.
+  const fx = document.createElement("script");
+  fx.src = "desk.js";
+  fx.dataset.ambient = "1";
+  fx.dataset.shake = ".page";
+  document.body.appendChild(fx);
 })();
 
 /* ---------------------------------------------------------------------------
@@ -350,6 +517,10 @@ dl.hours dt{font-weight:700}
   const AHEAD = 0.12;                      // scheduler lookahead in seconds
 
   const midi = n => 440 * Math.pow(2, (n - 69) / 12);
+
+  /* Halloween: the same tune, dropped into a minor key by flattening every
+     E, A and B. Delete this and the spooky() calls below to put it back. */
+  const spooky = n => [4, 9, 11].includes(n % 12) ? n - 1 : n;
 
   /* Four bars of eighth notes. Null is a rest. */
   const LEAD = [
@@ -423,7 +594,7 @@ dl.hours dt{font-weight:700}
     while (nextTime < ctx.currentTime + AHEAD){
       const i = step % LEAD.length;
       const n = LEAD[i];
-      if (n !== null) blip(midi(n), nextTime, SPB * 0.86, "square", 0.30);
+      if (n !== null) blip(midi(spooky(n)), nextTime, SPB * 0.86, "square", 0.30);
       if (i % 2 === 0) blip(midi(BASS[i]), nextTime, SPB * 1.5, "triangle", 0.42);
       hat(nextTime, i % 2 ? 0.10 : 0.05);
       nextTime += SPB;
